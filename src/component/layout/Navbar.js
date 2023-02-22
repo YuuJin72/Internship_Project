@@ -2,6 +2,6 @@ import './Navbar.css'
 
 export default function Navbar(){
     return(
-        <div className='navbar border-bottom' />
+        <div className='navbar' />
     )
 }
