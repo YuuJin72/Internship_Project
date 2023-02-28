@@ -13,6 +13,12 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { Modal } from '../modal/Modal';
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../store/user';
+
 
 const theme = createTheme({
   palette: {
@@ -28,9 +34,13 @@ const theme = createTheme({
 });
 
 const Navbar2 = () => {
+  const user = useSelector((state) => state.user.value)
+
+  const dispatch = useDispatch()
 
   const navigate = useNavigate()
-
+  const { Success } = Modal();
+  
   const onClickHome = () => {
     navigate('/')
   }
@@ -42,6 +52,21 @@ const Navbar2 = () => {
   const onClickLogIn = () => {
     navigate('/signin')
     handleMenuClose()
+  }
+
+  const onClickSignup = () => {
+    navigate('/signup')
+    handleMenuClose()
+  }
+
+  const onClickLogout = () => {
+    axios.post("http://localhost:8080/signout")
+    .then((response) => {
+      handleMenuClose()
+      Success('로그아웃 완료')
+      dispatch(logout(false))
+      navigate('/')
+    })
   }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -85,9 +110,10 @@ const Navbar2 = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={onClickLogIn}>로그인</MenuItem>
-      <MenuItem onClick={onClickLogIn}>로그아웃</MenuItem>
-      <MenuItem onClick={onClickLogIn}>내 정보 보기</MenuItem>
+      {!user && <MenuItem onClick={onClickLogIn}>로그인</MenuItem>}
+      {!user && <MenuItem onClick={onClickSignup}>회원가입</MenuItem>}
+      {user && <MenuItem onClick={onClickLogout}>로그아웃</MenuItem>}
+      {user && <MenuItem onClick={onClickLogIn}>내 정보 보기</MenuItem>}
     </Menu>
   );
 

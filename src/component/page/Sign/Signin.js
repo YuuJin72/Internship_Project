@@ -11,6 +11,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Modal } from '../../modal/Modal';
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { login } from '../../../store/user';
 
 const theme = createTheme({
     palette: {
@@ -26,16 +31,53 @@ const theme = createTheme({
   });
 
 const Signin = () => {
-
+  const { Failure } = Modal();
   const navigate = useNavigate()
+  axios.defaults.withCredentials = true;
+
+  const user = useSelector((state) => state.user.value)
+  const dispatch = useDispatch()
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
+    console.log('handleSubmit')
+    axios.post('http://localhost:8080/signin', {
+      id: data.get('id'),
       password: data.get('password'),
-    });
+    })
+    .then((response, err) => {
+      if(response.data.message === 'fail'){
+        Failure('아이디 또는 패스워드가 틀렸습니다.')
+      } else if(response.data.message === 'success'){
+        dispatch(login(true))
+        navigate('/')
+      } else {
+        console.log(response.data)
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+        console.log('1')
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      else if (error.request) {
+        console.log('2')
+        // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+        // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+        // Node.js의 http.ClientRequest 인스턴스입니다.
+        console.log(error.request);
+      }
+      else {
+        // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    })
   };
 
   const onClickSignup = () => {
@@ -66,10 +108,9 @@ const Signin = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="id"
               label="ID"
-              name="email"
-              autoComplete="email"
+              name="id"
               autoFocus
             />
             <TextField
@@ -81,7 +122,6 @@ const Signin = () => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
             />
             <Button
               color='green'

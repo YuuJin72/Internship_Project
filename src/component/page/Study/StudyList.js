@@ -19,7 +19,7 @@ const StudyList = () => {
 
     const navigate = useNavigate();
 
-    const onClickCreateStudy = () => {
+    const onClickStudyCreate = () => {
         navigate('/study/create')
     }
 
@@ -29,8 +29,8 @@ const StudyList = () => {
         slidesToShow: 3,
         slidesToScroll: 1,
         autoplay: true,
-        speed: 5000,
-        autoplaySpeed: 6000,
+        speed: 500,
+        autoplaySpeed: 5000,
         cssEase: "linear"
     };
 
@@ -132,7 +132,7 @@ const StudyList = () => {
                   sx={{
                     ml: '1rem'
                   }}
-                  onClick={onClickCreateStudy}>버튼</Button>
+                  onClick={onClickStudyCreate}>버튼</Button>
             </Typography>
             
             </Container>

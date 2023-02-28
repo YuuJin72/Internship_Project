@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Box from '@mui/material/Box'
 
 const StudyCreate = () => {
 
@@ -51,20 +52,25 @@ const StudyCreate = () => {
                 
                 <TextField size='small' fullWidth label="스터디 이름" color="darkgreen" focused margin="normal"/><p/>
                 <TextField size='small' fullWidth label="태그" color="darkgreen" focused margin="normal"/><p/>
-                <TextField size='small' fullWidth label="설명" color="darkgreen" focused margin="normal"/><p/>
+                <TextField size='small' multiline rows={8} fullWidth label="설명" color="darkgreen" focused margin="normal"/><p/>
                 </div> 
-                <Button
-                variant='contained'
-                color='darkgreen'
+                <Box
                 sx={{
-                    m: '1rem',
-                  }}>스터디 등록</Button> 
-                <Button
-                variant='contained'
-                color='darkgreen'
-                sx={{
-                    m: '1rem',
-                  }}>취소</Button>
+                      mt: '25rem',
+                    }}>
+                  <Button
+                  variant='contained'
+                  color='darkgreen'
+                  sx={{
+                      m: '1rem',
+                    }}>스터디 등록</Button> 
+                  <Button
+                  variant='contained'
+                  color='darkgreen'
+                  sx={{
+                      m: '1rem',
+                    }}>취소</Button>
+                </Box>
             </div>
             </ThemeProvider>
         </div>
