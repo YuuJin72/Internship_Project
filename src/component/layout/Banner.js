@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick-theme.css";
 import './Banner.css'
 import Slider from "react-slick";
 
-export default function Banner(){
+const Banner = () => {
     const settings = {
         dots: true,
         infinite: true,
@@ -33,3 +33,5 @@ export default function Banner(){
         </div>
     )
 }
+
+export default  Banner;
