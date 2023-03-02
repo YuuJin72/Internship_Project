@@ -17,7 +17,7 @@ import axios from 'axios';
 import { Modal } from '../modal/Modal';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { logout } from '../../store/user';
+import { loginState } from '../../store/user';
 
 
 const theme = createTheme({
@@ -64,7 +64,7 @@ const Navbar2 = () => {
     .then((response) => {
       handleMenuClose()
       Success('로그아웃 완료')
-      dispatch(logout(false))
+      dispatch(loginState(false))
       navigate('/')
     })
   }
@@ -90,7 +90,6 @@ const Navbar2 = () => {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-    console.log('4')
   };
 
   const menuId = 'primary-search-account-menu';
