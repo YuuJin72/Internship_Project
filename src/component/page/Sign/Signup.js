@@ -134,7 +134,7 @@ const SignUp = () => {
   
   const onClickemailAuth = () => {
     if(email !== '' && emailValid === false){
-        axios.post('http://localhost:8080/signup/emailauth', {
+      axios.post('http://localhost:8080/signup/emailauth', {
         email: email
       })
       .then((response) => {

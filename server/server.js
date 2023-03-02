@@ -2,7 +2,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
-import mysql from 'mysql'
+import mysql2 from 'mysql2'
 import cookieParser from 'cookie-parser';
 import fileStore from 'session-file-store';
 import passport from 'passport';
@@ -12,6 +12,7 @@ import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 
 dotenv.config()
+
 const Router = express.Router()
 
 // express 
@@ -34,16 +35,13 @@ app.use(cors({
 }));
   
 // mysql
-const con = mysql.createConnection({
+const con = mysql2.createConnection({
   host     : process.env.HOST,
   user     : process.env.USER,
   password : process.env.PASSWORD,
   database : process.env.DATABASE,
   port     : process.env.PORT
 });
-
-
-
 
 
 // 쿠키 미들웨어
@@ -77,9 +75,7 @@ app.post('/signup/duplicateId',  (req, res) => {
   `SELECT id FROM user
    WHERE id = ?`
   con.query(sql, [req.body.id], (err, result) => {
-    console.log(result)
     if(err){
-      console.log(err)
       res.json({ message: 'fail' })
     }
     else if (result.length === 0){
@@ -220,10 +216,8 @@ passport.use(new localStrategy({
                      WHERE id = ? AND pw = ?`;
         con.query(sql, [inputid, inputpw], function (err, result){
           if (result.length !== 0) {
-             console.log('yes result')
              return done(null, result[0]);
           } else {
-            console.log('not result')
              return done(null, false); 
           }
         })
@@ -256,11 +250,66 @@ app.get('/', function (req, res) {
   res.json({ message: 'fail' })
 });
 
+app.get('/islogin', (req, res) => {
+  console.log('checking login statues...')
+  console.log(req.isAuthenticated())
+  if (!req.isAuthenticated()) { 
+    res.json({message: "fail"}) 
+  }
+  else {
+    res.json({message: "success"}) 
+  }
+})
+
 // 로그아웃
 app.post('/signout', (req, res) => {
   req.logout(() => {
-      console.log("/signout req");
       req.session.destroy();
-      res.clearCookie('connect.sid').send({message: "로그아웃"});
+      res.clearCookie('connect.sid').send({message: "signout"});
   });
+})
+
+// 최근 스터디 조회
+app.get('/study/latest', (req, res) => {
+  const sql = `SELECT * FROM studylist
+               ORDER BY _num DESC
+               LIMIT 6`
+  con.query(sql, (err, result) => {
+    if(err) {
+      res.json({message : "fail"})
+    }
+    else{
+      res.send({
+        message: "success",
+        posts: result
+      })
+    }
+  })
+})
+
+// 스터디 생성
+app.post('/study/create', (req, res) => {
+  const limit = Number(req.body.limit_member)
+  console.log(limit)
+  if(limit < 2 || limit > 10){
+    res.json({message: "overlimit"})
+  } else{
+    const sql = `INSERT INTO studylist
+                  (hostid, title, tag, detail, limit_member)
+                  VALUES
+                  (?, ?, ?, ?, ?)`
+    con.query(sql, [req.user[0].id, req.body.title, req.body.tag, req.body.detail, limit],  (err, result) => {
+      if(err) throw err;
+      else{
+        const insSql = `INSERT INTO studymember
+                        (_num, id, comfirmed)
+                        VALUES
+                        (?, ?, ?)`
+        con.query(insSql, [result.insertId, req.user[0].id, true],  (err, result) => {
+          console.log('making post is successed')
+          res.json({message: "success"})
+        })
+      }
+    })
+  }
 })

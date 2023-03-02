@@ -15,7 +15,7 @@ import axios from 'axios';
 import { Modal } from '../../modal/Modal';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { login } from '../../../store/user';
+import { loginState } from '../../../store/user';
 
 const theme = createTheme({
     palette: {
@@ -51,7 +51,7 @@ const Signin = () => {
       if(response.data.message === 'fail'){
         Failure('아이디 또는 패스워드가 틀렸습니다.')
       } else if(response.data.message === 'success'){
-        dispatch(login(true))
+        dispatch(loginState(true))
         navigate('/')
       } else {
         console.log(response.data)
