@@ -53,7 +53,7 @@ const LatestPost = () => {
                     >
                     <DefaultImage/>
                     <CardContent sx={{ flexGrow: 1}}>
-                        <Typography gutterBottom variant="h5" component="h2">
+                        <Typography gutterBottom variant="h6" component="h2">
                         {el.title}
                         </Typography>
                         <Typography gutterBottom variant="subtitle2" component="h2">

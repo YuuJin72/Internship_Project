@@ -28,6 +28,3 @@ yarn-error.log*
 
 # sessions
 /server/sessions
-
-#nodemailer
-/server/senderinfo.json

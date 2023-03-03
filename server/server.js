@@ -10,6 +10,9 @@ import passportLocal from 'passport-local';
 import session from 'express-session';
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
+import * as fs from 'fs'
+import multer from 'multer'
+import path from 'path'
 
 dotenv.config()
 
@@ -67,7 +70,39 @@ const localStrategy = passportLocal.Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
 
+// =================================================================================== //
+// try {
+// 	fs.readdirSync('uploads'); // 폴더 확인
+// } catch(err) {
+// 	console.error('uploads 폴더가 없습니다. 폴더를 생성합니다.');
+//     fs.mkdirSync('uploads'); // 폴더 생성
+// }
 
+// const upload = multer({
+//     storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
+//         destination(req, file, done) { // 저장 위치
+//             done(null, 'uploads/'); // uploads라는 폴더 안에 저장
+//         },
+//         filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
+//             const ext = path.extname(file.originalname); // 파일의 확장자
+//             done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+//         }
+//     }),
+//     limits: { fileSize: 5 * 1024 * 1024 } // 5메가로 용량 제한
+// });
+
+// app.post('/upload', upload.single('image'), (req, res) => { // 'image'라는 이름은 multipart.html의 <input type="file" name="image"> 에서 폼데이터 이름으로 온 것이다.
+    
+//   // upload.single('image')의 업로드 정보가 req.file에 넣어진다.
+//   // <input type="text" name="title"> 의 텍스트 정보가 req.body에 넣어진다.
+//   console.log(req.file, req.body); 
+//   res.send('ok');
+// })
+
+app.post('/test', (req, res) => {
+  console.log(req.body.img)
+})
+// =================================================================================== //
 
 // 회원가입
 app.post('/signup/duplicateId',  (req, res) => {
@@ -164,6 +199,11 @@ app.post('/signup/emailauth', (req, res) => {
   })
 })
 
+// 프로필사진 업로드
+app.post('/signup/upload', (req, res) => {
+
+})
+
 app.post('/signup', (req, res) => {
   const deleteEmail = req.body.email
   const sql = `SELECT auth_number FROM auth
@@ -229,12 +269,10 @@ app.post('/signin', passport.authenticate('local', { failureRedirect: '/',}), (r
 })
 
 passport.serializeUser((user, done) => {
-  console.log('serializeUser')
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  console.log('deserializeUser')
   const sql = `SELECT * FROM user
                      WHERE id = ?`
         con.query(sql, [user.id], function (err, result){
@@ -251,7 +289,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/islogin', (req, res) => {
-  console.log('checking login statues...')
+  console.log('checking login status...')
   console.log(req.isAuthenticated())
   if (!req.isAuthenticated()) { 
     res.json({message: "fail"}) 
@@ -302,14 +340,92 @@ app.post('/study/create', (req, res) => {
       if(err) throw err;
       else{
         const insSql = `INSERT INTO studymember
-                        (_num, id, comfirmed)
+                        (_num, id, confirmed)
                         VALUES
                         (?, ?, ?)`
-        con.query(insSql, [result.insertId, req.user[0].id, true],  (err, result) => {
+        con.query(insSql, [result.insertId, req.user[0].id, 1],  (err, result) => {
           console.log('making post is successed')
           res.json({message: "success"})
         })
       }
     })
+  }
+})
+
+// 스터디 상세 (멤버확인)
+app.get('/study/isconfirmed/:id', (req, res) => {
+
+  const listSql = `SELECT * FROM studylist
+                    WHERE _num = "${Number(req.params.id)}"`
+
+  if(!req.isAuthenticated()){
+    console.log('nnn')
+    con.query(listSql, (err, result) => {
+      res.json({
+        message: "nonconfirmed",
+        result: result
+      })
+    })
+  } else {
+    const sql = `SELECT * FROM studymember
+               WHERE _num = ?`
+    con.query(sql, [Number(req.params.id)], (err, result) => {
+      if(err) throw err
+      if(result.length === 0){
+        res.json({message: "404"})
+      }
+      else{
+        const confirmSql = `SELECT * FROM studymember sm
+                            JOIN studylist sl
+                            ON sl._num = sm._num
+                            AND sm._num = ?
+                            AND sm.id = ?`
+        con.query(confirmSql, [Number(req.params.id), req.user[0].id], (err, result) => {
+          if(err) throw err
+          if(result.length === 0){
+            con.query(listSql, (err, result) => {
+              res.json({
+                message: "nonconfirmed",
+                result: result
+              })
+            })
+          } else if(result[0].confirmed === 0){
+            res.json({
+              message: "waiting",
+              result: result
+            })
+          } else if(result[0].confirmed === 1){
+            res.json({message: "confirmed"})
+          } else{
+            res.json({message: "error"})
+          }
+        })
+      }
+    })
+  }
+})
+
+// 스터디 가입 신청 및 취소
+app.post('/study/requestmember/:id', (req, res) => {
+  if(!req.body.status){
+    const insSql = `INSERT INTO studymember
+                  (_num, id, confirmed)
+                  VALUES
+                  (?, ?, ?)`
+    con.query(insSql, [Number(req.params.id), req.user[0].id, 0], (err, result) => {
+      if(err) throw err
+      res.json({message: "request_success"})
+    })
+  } else if(req.body.status){
+    const delSql = `DELETE FROM studymember
+    WHERE _num = ?
+    AND id = ?
+    AND confirmed = 0`
+    con.query(delSql, [Number(req.params.id), req.user[0].id], (err, result) => {
+      if(err) throw err
+      res.json({message: "reqcancel_success"})
+    })
+  } else {
+    res.json({message: "err"})
   }
 })

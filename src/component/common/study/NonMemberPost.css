@@ -1,0 +1,25 @@
+.create-background-outer{
+    text-align: center;
+}
+
+.create-background{
+    display: inline-block;
+    width: 60%;
+    height: 50rem;
+}
+
+.create-background-left{
+    text-align: center;
+    padding-right: 2rem;
+    width: 50%;
+    height: 20rem;
+    float: left;
+}
+
+.create-background-right{
+    padding-left: 2rem;
+    text-align: left;
+    width: 50%;
+    height: 20rem;
+    float: right;
+}
