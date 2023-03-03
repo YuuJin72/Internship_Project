@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -62,13 +62,13 @@ const SignUp = () => {
         axios.post('http://localhost:8080/signup/duplicateId', {
         id: idInput
       })
-      .then((response) => {
-        if(response.data.message === 'success'){
+      .then((res) => {
+        if(res.data.message === 'success'){
           Success('사용가능한 아이디입니다.')
           setIdErrorMessage(idErrorMessage => '사용가능한 아이디입니다.')
           setIdState(false)
           dispatch(chkId(true))
-        } else if(response.data.message === 'duplicate'){
+        } else if(res.data.message === 'duplicate'){
           Warning('중복된 닉네임입니다.')
           setIdErrorMessage(idErrorMessage => '중복된 아이디입니다.')
           setIdState(true)
@@ -137,8 +137,8 @@ const SignUp = () => {
       axios.post('http://localhost:8080/signup/emailauth', {
         email: email
       })
-      .then((response) => {
-        if(response.data.message === 'duplicate'){
+      .then((res) => {
+        if(res.data.message === 'duplicate'){
           Warning('중복된 이메일입니다.')
           dispatch(chkEmail(false))
         } else {
@@ -168,6 +168,10 @@ const SignUp = () => {
     );
   };
 
+  const handleUpload = () => {
+    console.log('upload')
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -179,10 +183,10 @@ const SignUp = () => {
         nickname: data.get('nickname'),
         emailnumber: data.get('emailnumber')
       })
-      .then((response) => {
-        if(response.data.message === 'fail'){
+      .then((res) => {
+        if(res.data.message === 'fail'){
           Failure('오류가 발생했습니다.')
-        } else if (response.data.message === 'success') {
+        } else if (res.data.message === 'success') {
           Success('회원가입이 완료되었습니다!')
           navigate('/signin')
         } else {
@@ -197,8 +201,25 @@ const SignUp = () => {
     }
     
   };
-
-
+// ============================ 이미지 업로드 부분 ======================================= //
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  useEffect(() => {
+    if (selectedImage) {
+      console.log(selectedImage)
+      setImageUrl(URL.createObjectURL(selectedImage));
+      axios.post('http://localhost:8080/test', {
+        img: selectedImage
+      })
+      .then((res) => {
+        
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+  }, [selectedImage]);
+  // ============================ 이미지 업로드 부분 ======================================= //
   return (
     <Container>
       <ThemeProvider theme={theme}>
@@ -218,7 +239,31 @@ const SignUp = () => {
             <Typography component="h1" variant="h5" mt='1rem'>
               회원가입
             </Typography>
-            
+ {/* // ============================ 이미지 업로드 부분 ======================================= // */}
+            <>
+      <input
+        accept="image/*"
+        type="file"
+        id="select-image"
+        style={{ display: "none" }}
+        onChange={(e) => 
+          setSelectedImage(e.target.files[0])}
+      />
+      <label htmlFor="select-image">
+        <Button variant="contained" color="primary" component="span">
+          Upload Image
+        </Button>
+      </label>
+      {imageUrl && selectedImage && (
+        <Box mt={2} textAlign="center">
+          <div>Image Preview:</div>
+          <img src={imageUrl} alt={selectedImage.name} height="100px" />
+        </Box>
+      )}
+    </>
+
+    {/* // ============================ 이미지 업로드 부분 ======================================= // */}
+
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2} item xs={12}>
                 <Grid item xs={12} sm={6}>
@@ -339,9 +384,11 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Button
+                  component='label'
                   color='green'
                   variant="contained">
                       프로필 업로드
+                      <input hidden accept="image/*" multiple type="file" />
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={4.5} />

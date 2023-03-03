@@ -11,8 +11,12 @@ import StudyCreate from "./component/page/Study/StudyCreate";
 import StudyDetail from "./component/page/Study/StudyDetail";
 import ErrorPage from "./component/page/Main/Error";
 import StudyLayout from "./component/outlet/StudyOutlet";
+import axios from "axios";
 
 function App() {
+
+  axios.defaults.withCredentials = true;
+
   return (
     <>
     <BrowserRouter>
@@ -21,7 +25,6 @@ function App() {
       <Banner />
       <Routes>
         <Route path="/" exact={true} element={<Main />} />
-
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
 

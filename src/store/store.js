@@ -15,6 +15,7 @@ import pwReducer from './signup/signpw'
 import emailReducer from './signup/signemail'
 import nicknameReducer from './signup/signnickname'
 import pwcReducer from './signup/signpwc'
+import memberReducer from './member'
 
 const persistConfig = {
   key: 'root',
@@ -23,6 +24,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
+  member: memberReducer,
   id : idReducer,
   pw : pwReducer,
   pwc : pwcReducer,

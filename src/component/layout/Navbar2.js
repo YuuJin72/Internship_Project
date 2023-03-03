@@ -61,7 +61,7 @@ const Navbar2 = () => {
 
   const onClickLogout = () => {
     axios.post("http://localhost:8080/signout")
-    .then((response) => {
+    .then((res) => {
       handleMenuClose()
       Success('로그아웃 완료')
       dispatch(loginState(false))

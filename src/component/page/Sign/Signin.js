@@ -33,7 +33,6 @@ const theme = createTheme({
 const Signin = () => {
   const { Failure } = Modal();
   const navigate = useNavigate()
-  axios.defaults.withCredentials = true;
 
   const user = useSelector((state) => state.user.value)
   const dispatch = useDispatch()
@@ -47,33 +46,26 @@ const Signin = () => {
       id: data.get('id'),
       password: data.get('password'),
     })
-    .then((response, err) => {
-      if(response.data.message === 'fail'){
+    .then((res, err) => {
+      if(res.data.message === 'fail'){
         Failure('아이디 또는 패스워드가 틀렸습니다.')
-      } else if(response.data.message === 'success'){
+      } else if(res.data.message === 'success'){
         dispatch(loginState(true))
         navigate('/')
       } else {
-        console.log(response.data)
+        console.log(res.data)
       }
     })
     .catch((error) => {
-      if (error.response) {
-        // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-        console.log('1')
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+      if (error.res) {
+        console.log(error.res.data);
+        console.log(error.res.status);
+        console.log(error.res.headers);
       }
       else if (error.request) {
-        console.log('2')
-        // 요청이 이루어 졌으나 응답을 받지 못했습니다.
-        // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
-        // Node.js의 http.ClientRequest 인스턴스입니다.
         console.log(error.request);
       }
       else {
-        // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
         console.log('Error', error.message);
       }
       console.log(error.config);
