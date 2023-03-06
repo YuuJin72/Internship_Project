@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
+import { Box, TextField, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -14,6 +14,10 @@ import "slick-carousel/slick/slick-theme.css";
 import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { useNavigate } from 'react-router-dom';
 import LatestPost from '../../common/study/LatestPost';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { searchState } from '../../../store/search'
+
 
 const theme = createTheme({
   palette: {
@@ -31,9 +35,26 @@ const theme = createTheme({
 const StudyMain = () => {
 
     const navigate = useNavigate();
+    const [searchInput, SetSearchInput] = useState('')
 
     const handleStudyCreate = () => {
         navigate('/study/create')
+    }
+
+    const handleStudyList = () => {
+      navigate('/study/list')
+  }
+
+    const searchReducer = useSelector((state) => state.search.value)
+    const dispatch = useDispatch()
+
+    const handleChangeSearch = (e) => {
+      SetSearchInput(e.target.value)
+    }
+
+    const handleSearch = () => {
+      navigate('/study/search')
+      dispatch(searchState(searchInput))
     }
 
     const settings = {
@@ -67,9 +88,33 @@ const StudyMain = () => {
                   align="center"
                   color="text.primary"
                   gutterBottom
+                  mb={10}
                 >
                   공 부 밭
                 </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={10}>
+                    <TextField
+                      color='green'
+                      size="small"
+                      fullWidth
+                      id="search"
+                      value={searchInput}
+                      onChange={handleChangeSearch}
+                      label="스터디 검색"
+                      name="search"
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant='contained'
+                      color='darkgreen'
+                      sx={{
+                        ml: '1rem'
+                      }}
+                      onClick={handleSearch}>검색</Button>
+                  </Grid>
+                </Grid>
               </Container>
             </Box>
             <Container sx={{ py: 8 }} maxWidth="md">
@@ -126,7 +171,7 @@ const StudyMain = () => {
               sx={{
                 ml: '1rem'
               }}
-              onClick={handleStudyCreate}>전체 스터디 보기</Button>
+              onClick={handleStudyList}>전체 스터디 보기</Button>
               <Button
               variant='contained'
               color='darkgreen'
