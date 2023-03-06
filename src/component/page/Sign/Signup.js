@@ -20,8 +20,7 @@ import { chkPw } from '../../../store/signup/signpw'
 import { chkPwc } from '../../../store/signup/signpwc'
 import { chkEmail } from '../../../store/signup/signemail'
 import { chkNickname } from '../../../store/signup/signnickname'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const theme = createTheme({
     palette: {
@@ -201,15 +200,19 @@ const SignUp = () => {
     }
     
   };
-// ============================ 이미지 업로드 부분 ======================================= //
+// ============================ 이미지 업로드 부분 시작======================================= //
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   useEffect(() => {
     if (selectedImage) {
       console.log(selectedImage)
       setImageUrl(URL.createObjectURL(selectedImage));
-      axios.post('http://localhost:8080/test', {
-        img: selectedImage
+      const formData = new FormData();
+      formData.append('img', selectedImage);
+      axios.post('http://localhost:8080/upload', 
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        img: formData
       })
       .then((res) => {
         
@@ -219,7 +222,7 @@ const SignUp = () => {
       })
     }
   }, [selectedImage]);
-  // ============================ 이미지 업로드 부분 ======================================= //
+  // ============================ 이미지 업로드 부분 끝======================================= //
   return (
     <Container>
       <ThemeProvider theme={theme}>
@@ -239,18 +242,19 @@ const SignUp = () => {
             <Typography component="h1" variant="h5" mt='1rem'>
               회원가입
             </Typography>
- {/* // ============================ 이미지 업로드 부분 ======================================= // */}
-            <>
+ {/* // ============================ 이미지 업로드 부분 시작======================================= // */}
+    <form action="/upload" method="post" encType="multipart/form-data">
       <input
         accept="image/*"
         type="file"
-        id="select-image"
+        id="image"
+        name='image'
         style={{ display: "none" }}
         onChange={(e) => 
           setSelectedImage(e.target.files[0])}
       />
-      <label htmlFor="select-image">
-        <Button variant="contained" color="primary" component="span">
+      <label htmlFor="image">
+        <Button variant="contained" color="primary" type='submit' component="span">
           Upload Image
         </Button>
       </label>
@@ -260,9 +264,9 @@ const SignUp = () => {
           <img src={imageUrl} alt={selectedImage.name} height="100px" />
         </Box>
       )}
-    </>
+    </form>
 
-    {/* // ============================ 이미지 업로드 부분 ======================================= // */}
+    {/* // ============================ 이미지 업로드 부분 끝======================================= // */}
 
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2} item xs={12}>

@@ -12,6 +12,9 @@ import StudyDetail from "./component/page/Study/StudyDetail";
 import ErrorPage from "./component/page/Main/Error";
 import StudyLayout from "./component/outlet/StudyOutlet";
 import axios from "axios";
+import MuiFileUploader from "./component/page/Sign/upload";
+import StudyList from "./component/page/Study/StudyList";
+import StudySearch from "./component/page/Study/StudySearch";
 
 function App() {
 
@@ -27,12 +30,14 @@ function App() {
         <Route path="/" exact={true} element={<Main />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/upload" element={<MuiFileUploader />} />
 
         <Route path="/study" element={<StudyLayout />}>
-          {/* <Route path="search" element={<StudySearch />} /> */}
           <Route index element={<StudyMain />} />
+          <Route path="search" element={<StudySearch />} />
           <Route path=':id' element={<StudyDetail />} />
           <Route path="create" element={<StudyCreate />} />
+          <Route path="list" element={<StudyList />} />
         </Route>
 
         <Route path="*" element={<ErrorPage />} />
