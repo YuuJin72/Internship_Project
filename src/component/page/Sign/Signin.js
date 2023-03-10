@@ -41,7 +41,6 @@ const Signin = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log('handleSubmit')
     axios.post('http://localhost:8080/signin', {
       id: data.get('id'),
       password: data.get('password'),

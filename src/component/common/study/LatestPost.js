@@ -49,10 +49,10 @@ const LatestPost = () => {
             {posts.map((el) => (
                 <Card
                     key={el}
-                    sx={{ height: '20rem', display: 'flex', flexDirection: 'column', p: '1rem'}}
+                    sx={{ height: '30rem', display: 'flex', flexDirection: 'column', p: '1rem'}}
                     >
                     <DefaultImage/>
-                    <CardContent sx={{ flexGrow: 1}}>
+                    <CardContent sx={{ flexGrow: 1 }}>
                         <Typography gutterBottom variant="h6" component="h2">
                         {el.title}
                         </Typography>
