@@ -6,11 +6,13 @@ import { Box, ThemeProvider, Typography, Button, createTheme } from '@mui/materi
 import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { Modal } from '../../modal/Modal';
 import { memberState } from '../../../store/member';
+import { loginState } from '../../../store/user';
 
 const NonMemberPost = (props) => {
 
     const member = useSelector((state) => state.member.value)
     const islogin = useSelector((state => state.user.value))
+    const user = useSelector((state) => state.user.value) 
 
     const params = useParams();
     const dispatch = useDispatch()
@@ -51,6 +53,7 @@ const NonMemberPost = (props) => {
                     dispatch(memberState(false))
                 } else {
                     Failure('에러가 발생했습니다.')
+                    dispatch(loginState(false))
                 }
             })
         }
