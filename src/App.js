@@ -12,7 +12,7 @@ import StudyDetail from "./component/page/Study/StudyDetail";
 import ErrorPage from "./component/page/Main/Error";
 import StudyLayout from "./component/outlet/StudyOutlet";
 import axios from "axios";
-import MuiFileUploader from "./component/page/Sign/upload";
+// import MuiFileUploader from "./component/page/Sign/upload";
 import StudyList from "./component/page/Study/StudyList";
 import StudySearch from "./component/page/Study/StudySearch";
 import Board from "./component/common/study/studyroom/Board"
@@ -34,7 +34,7 @@ function App() {
         <Route path="/" exact={true} element={<Main />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/upload" element={<MuiFileUploader />} />
+        {/* <Route path="/upload" element={<MuiFileUploader />} /> */}
         <Route path="/study" element={<StudyLayout />}>
           <Route index element={<StudyMain />} />
           <Route path="search" element={<StudySearch />} />

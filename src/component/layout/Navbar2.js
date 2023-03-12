@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { loginState } from '../../store/user';
 
-
+// 네비게이션 바
 const theme = createTheme({
   palette: {
     green: {

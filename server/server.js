@@ -396,7 +396,6 @@ app.get('/study/list', (req, res) => {
 
 // 스터디 검색
 app.post('/study/search', (req, res) => {
-  console.log(req.body.searchData)
   const keyword = "%" + req.body.searchData + "%"
   const sql = `SELECT * FROM studylist
                WHERE title LIKE ?
@@ -447,7 +446,6 @@ app.post('/study/create', (req, res) => {
 
 // 스터디 가입 신청 및 취소
 app.post('/study/requestmember/:id', (req, res) => {
-  console.log(req.user)
   if(req.isAuthenticated() && !req.body.status){
     const insSql = `INSERT INTO studymember
                   (_num, id, confirmed)
@@ -494,22 +492,26 @@ app.post('/study/:id/todo', (req, res) => {})
 //스터디룸 board
 app.post('/study/:id/board', (req, res) => {
   const sql = `
-  select * from studyboard
-  where _num = ?
+  select sb._id, sb._num, sb.id, sb.detail, sb.w_date, sl.hostid from studyboard sb
+  join studylist sl 
+  on sb._num = sl._num
+  where sb._num = ?
   order by _id desc`
   con.query(sql, [Number(req.params.id)], (err, result) => {
-    console.log(result)
+    console.log(result[0])
     if(err){res.json({message : 'error'})}
     if(result.length === 0){
       res.send({
         message: 'success',
-        result: null
+        result: null,
+        hostid: result[0].hostid
       })
     }
     else{
       res.send({
         message: 'success',
-        result: result
+        result: result,
+        hostid: result[0].hostid
       })
     }
   })
@@ -532,7 +534,60 @@ app.post('/study/:id/board/submit', (req, res) => {
   })
 })
 
+// board - 수정
+app.post('/study/:id/board/editstart', (req, res) => {
+  const sql = `
+  select * from studyboard
+  where _num = ?
+  and _id = ?
+  `
+  con.query(sql, [Number(req.params.id), req.body.boardId], 
+    (err, result) => {
+      if(err) throw err
+      else{
+        res.send({
+          message : 'success',
+          detail: result[0].detail,
+          _id: result[0]._id
+        })
+      }
+  })
+})
 
+// board - 수정 완료
+app.post('/study/:id/board/editend', (req, res) => {
+  console.log(req.body.boardId)
+  console.log(req.body.detail)
+  const sql = `
+  update studyboard
+  set detail = ?
+  where _num = ?
+  and _id = ?
+  `
+  con.query(sql, [req.body.detail, Number(req.params.id), req.body.boardId], 
+    (err, result) => {
+      if(err) throw err
+      else{
+        res.json({
+          message : 'success',
+        })
+      }
+  })
+})
+
+// board - 삭제
+app.post('/study/:id/board/postdelete', (req, res) => {
+  const sql = `
+  delete from studyboard
+  where _num = ?
+  AND _id = ?`
+  con.query(sql, [Number(req.params.id), req.body.boardId], (err, result) => {
+    if(err) throw err
+    else{
+      res.json({message : 'success'})
+    }
+  })
+})
 
 
 
@@ -623,10 +678,6 @@ app.post('/study/:id/membernonconfirm', (req, res) => {
 
 // settings - 저장
 app.post('/study/:id/settingsave', (req, res) => {
-  console.log(req.body.title, req.body.tag, 
-    req.body.detail, req.body.main_obj, 
-    req.body.main_obj_date,
-    Number(req.params.id))
   const sql = `
   update studylist
   set title = ?,
