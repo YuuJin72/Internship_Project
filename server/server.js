@@ -309,54 +309,70 @@ app.post('/signout', (req, res) => {
 // 스터디 상세 (멤버확인)
 app.get('/study/isconfirmed/:id', (req, res) => {
   
-  const listSql = `SELECT * FROM studylist
-                    WHERE _num = "${Number(req.params.id)}"`
+  const listSql = `
+  SELECT * FROM studylist
+  WHERE _num = "${Number(req.params.id)}"`
 
-  if(!req.isAuthenticated()){
-    con.query(listSql, (err, result) => {
-      res.json({
-        message: "nonconfirmed",
-        result: result
-      })
-    })
-  } else {
-    const sql = `SELECT * FROM studymember
-               WHERE _num = ?`
-    con.query(sql, [Number(req.params.id)], (err, result) => {
-      if(err) throw err
-      if(result.length === 0){
-        res.json({message: "404"})
-      }
-      else{
-        const confirmSql = `SELECT * FROM studymember sm
-                            JOIN studylist sl
-                            ON sl._num = sm._num
-                            AND sm._num = ?
-                            AND sm.id = ?`
-        con.query(confirmSql, [Number(req.params.id), req.user[0].id], (err, result) => {
+  const numSql = `
+  select Count(_num) as total from studymember s 
+  where _num = ?`
+
+  con.query(numSql, [Number(req.params.id)], (err, result) => {
+    const limmem = result
+    console.log(result)
+      if(!req.isAuthenticated()){
+          con.query(listSql, [Number(req.params.id)], (err, result) => {
+            res.json({
+              message: "nonconfirmed",
+              result: result,
+              limmem: limmem
+            })
+          })
+      } else {
+        const sql = `SELECT * FROM studymember
+                   WHERE _num = ?`
+        con.query(sql, [Number(req.params.id)], (err, result) => {
           if(err) throw err
           if(result.length === 0){
-            con.query(listSql, (err, result) => {
-              res.json({
-                message: "nonconfirmed",
-                result: result
-              })
+            res.json({message: "404"})
+          }
+          else{
+            const confirmSql = `SELECT * FROM studymember sm
+                                JOIN studylist sl
+                                ON sl._num = sm._num
+                                AND sm._num = ?
+                                AND sm.id = ?`
+            con.query(confirmSql, [Number(req.params.id), req.user[0].id], (err, result) => {
+              if(err) throw err
+              if(result.length === 0){
+                con.query(listSql, (err, result) => {
+                  res.json({
+                    message: "nonconfirmed",
+                    result: result,
+                    limmem: limmem
+                  })
+                })
+              } else if(result[0].confirmed === 0){
+                res.json({
+                  message: "waiting",
+                  result: result,
+                  limmem: limmem
+                })
+              } else if(result[0].confirmed === 1){
+                res.json({
+                  message: "confirmed",
+                  hostid: result[0].hostid
+                })
+              } else{
+                res.json({message: "error"})
+              }
             })
-          } else if(result[0].confirmed === 0){
-            res.json({
-              message: "waiting",
-              result: result
-            })
-          } else if(result[0].confirmed === 1){
-            res.json({message: "confirmed"})
-          } else{
-            res.json({message: "error"})
           }
         })
       }
     })
-  }
-})
+  })
+
 
 // 최근 스터디 조회
 app.get('/study/latest', (req, res) => {
@@ -446,29 +462,40 @@ app.post('/study/create', (req, res) => {
 
 // 스터디 가입 신청 및 취소
 app.post('/study/requestmember/:id', (req, res) => {
-  if(req.isAuthenticated() && !req.body.status){
-    const insSql = `INSERT INTO studymember
-                  (_num, id, confirmed)
-                  VALUES
-                  (?, ?, ?)`
-    con.query(insSql, [Number(req.params.id), req.user[0].id, 0], (err, result) => {
-      if(err) throw err
-      res.json({message: "request_success"})
-    })
-  } else if(req.isAuthenticated() && req.body.status){
-    const delSql = `DELETE FROM studymember
-    WHERE _num = ?
-    AND id = ?
-    AND confirmed = 0`
-    con.query(delSql, [Number(req.params.id), req.user[0].id], (err, result) => {
-      if(err) throw err
-      res.json({message: "reqcancel_success"})
-    })
-  } else {
-    res.json({message: "err"})
-  }
+  const chkSql = `
+  select Count(sm._num) as total, sl.limit_member from studymember sm
+  join studylist sl
+  on sl._num = sm._num
+  where sl._num = ?
+  group by limit_member`
+  con.query(chkSql, [Number(req.params.id)], (err, result) => {
+    if(result[0].total >= result[0].limit_member){
+      res.json({message: "overlimit"})
+    } else if(req.isAuthenticated() && !req.body.status){
+      const insSql = `INSERT INTO studymember
+                    (_num, id, confirmed)
+                    VALUES
+                    (?, ?, ?)`
+      con.query(insSql, [Number(req.params.id), req.user[0].id, 0], (err, result) => {
+        if(err) throw err
+        res.json({message: "request_success"})
+      })
+    } else if(req.isAuthenticated() && req.body.status){
+      const delSql = `DELETE FROM studymember
+      WHERE _num = ?
+      AND id = ?
+      AND confirmed = 0`
+      con.query(delSql, [Number(req.params.id), req.user[0].id], (err, result) => {
+        if(err) throw err
+        res.json({message: "reqcancel_success"})
+      })
+    } else {
+      res.json({message: "err"})
+    }
+  })
 })
 
+// ================================================================== //
 // 스터디룸 홈
 app.post('/study/:id/home', (req, res) => {
   const sql = `
@@ -484,11 +511,135 @@ app.post('/study/:id/home', (req, res) => {
     })
   })
 })
+// ================================================================== //
+// 스터디룸 스케쥴 로더
+app.post('/study/:id/schedule', (req, res) => {
+  const sql = `
+  SELECT sl.main_obj as title, sl.main_obj_date as date FROM studylist sl
+  JOIN studymember sm 
+  ON sm._num = sl._num
+  WHERE sm._num = ?
+  AND sm.confirmed = 1`
+  con.query(sql, [Number(req.params.id)], (err, result) => {
+    res.send({
+      message: 'success',
+      result: result[0]
+    })
+  })
+})
 
-//스터디룸 할일
-app.post('/study/:id/todo', (req, res) => {})
+// 스터디룸 todo - 일정 불러오기
+app.post('/study/:id/todoindiv', (req, res) => {
+  const delSql = `delete from studysubobject
+  where _num = ?
+  and todotype <> 1
+  and start <> ?`
+  con.query(delSql, [Number(req.params.id), req.body.date], (err, result) => {
+    if(err) throw err
+    else{
+      console.log('delete complete')
+      const sql = `select * from studysubobject
+      where _num = ?
+      and id = ?
+      and start = ?
+      and todotype <> 1`
+      con.query(sql, [Number(req.params.id), req.user[0].id, req.body.date], (err, result) => {
+        if(err) res.json({message : 'err'})
+        else res.json({
+          message : 'success',
+          result: result
+        })
+      })
+    }
+  })
+})
+
+//스터디룸 todo - 개인 할일 추가
+app.post('/study/:id/todosubmit', (req, res) => {
+  const sql = `
+  insert into studysubobject
+  (_num, id, start, end, title, todotype, isfinished)
+  values
+  (?, ?, ?, ?, ?, ?, ?)`
+  con.query(sql, [Number(req.params.id), req.user[0].id, req.body.date, req.body.date, req.body.title, 0, 0], (err, result) => {
+    if(err) res.json({message : 'err'})
+    else res.json({message : 'success'})
+  })
+})
+
+// 스터디룸 todo - 개인 할 일 삭제
+app.post('/study/:id/tododelete', (req, res) => {
+  const delSql = `delete from studysubobject
+  where _num = ?
+  and _id = ?`
+  con.query(delSql, [req.params.id, req.body._id], (err, result) => {
+    if(err) res.json({message : 'err'})
+    else res.json({message : 'success'})
+  })
+})
+
+// 스터디룸 todo - 개인 할 일 완료
+app.post('/study/:id/todofinish', (req, res) => {
+  const sql = `update studysubobject s
+  set isfinished = 1
+  where _num = ?
+  and s.id = ?`
+  con.query(sql, [Number(req.params.id), req.user[0].id], (err, result) => {
+    if(err) res.json({message : 'err'})
+    else res.json({message : 'success'})
+  })
+})
 
 
+// 스터디룸 todo - 멤버 상태
+app.post('/study/:id/todomember', (req, res) => {
+  const sql = `
+  select distinct sm.id as mem, isfinished, todotype from studymember sm
+  left join studysubobject s 
+  on sm.id = s.id
+  where sm._num = ?
+  and todotype = 0
+  or todotype is null`
+  con.query(sql, [req.params.id],(err, result) => {
+    if(err) res.json({message : 'err'})
+    else res.json({
+      message : 'success',
+    result : result
+    })
+  })
+})
+
+// ================================================================== //
+// 스터디룸 todo - 전체스케쥴
+app.post('/study/:id/todoall', (req, res) => {
+  const sql = `select * from studysubobject
+  where _num = ?
+  and todotype = 1`
+  con.query(sql, [Number(req.params.id)], (err, result) => {
+    if(err) res.json({message : 'err'})
+    else res.json({
+      message : 'success',
+      result: result
+    })
+  })
+})
+
+app.post('/study/:id/todoallsubmit', (req, res) => {
+
+  const sql = `
+  insert into studysubobject
+  (_num, id, start, end, title, todotype, isfinished)
+  values
+  (?, ?, ?, ?, ?, ?, ?)`
+  con.query(sql, [Number(req.params.id), req.user[0].id, req.body.date, req.body.date, req.body.title, 1, 0], (err, result) => {
+    if(err) res.json({message : 'err'})
+    else res.json({
+      message : 'success'
+    })
+  })
+})
+
+// ================================================================== //
 //스터디룸 board
 app.post('/study/:id/board', (req, res) => {
   const sql = `
@@ -498,20 +649,19 @@ app.post('/study/:id/board', (req, res) => {
   where sb._num = ?
   order by _id desc`
   con.query(sql, [Number(req.params.id)], (err, result) => {
-    console.log(result[0])
     if(err){res.json({message : 'error'})}
     if(result.length === 0){
       res.send({
         message: 'success',
         result: null,
-        hostid: result[0].hostid
+        writer: req.user[0].id
       })
     }
     else{
       res.send({
         message: 'success',
         result: result,
-        hostid: result[0].hostid
+        writer: req.user[0].id
       })
     }
   })
@@ -556,8 +706,6 @@ app.post('/study/:id/board/editstart', (req, res) => {
 
 // board - 수정 완료
 app.post('/study/:id/board/editend', (req, res) => {
-  console.log(req.body.boardId)
-  console.log(req.body.detail)
   const sql = `
   update studyboard
   set detail = ?
@@ -589,11 +737,7 @@ app.post('/study/:id/board/postdelete', (req, res) => {
   })
 })
 
-
-
-
-
-
+// ================================================================== //
 //스터디룸 settings
 app.post('/study/:id/settingsr', (req, res) => {
   const r_sql = `

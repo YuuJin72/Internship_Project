@@ -8,8 +8,21 @@ import TodaysWork from './TodaysWork';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router'
+import TodoIndivMember from './TodoIndivMember';
+import TodoAllMember from './TodoAllMember';
 
 const Todo = () => {
+
+    const getFormatDate = (date) => {
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth())
+        month = month >= 10 ? month : '0' + month
+        let day = date.getDate()
+        day = day >= 10 ? day : '0' + day
+        return year + '-' + month + '-' + day
+    }
+
+    let today = getFormatDate(new Date())
 
     const theme = createTheme({
         palette: {
@@ -23,6 +36,7 @@ const Todo = () => {
           },
         },
       });
+      console.log(today)
 
     return(
         <ThemeProvider theme={theme}>
@@ -45,12 +59,7 @@ const Todo = () => {
                     <MyCalendar/>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography>
-                        일정 (멤버 전체)
-                    </Typography>
-                    <Typography>
-                        ㄹㄹ
-                    </Typography>
+                    <TodoAllMember />
                 </Grid>
             </Grid>
             </Paper>
@@ -66,23 +75,15 @@ const Todo = () => {
             <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
                 <Grid item xs={6}>
                     <Typography>
-                        Today : 날짜
+                        Today : {today}
                     </Typography>
                     <p/>
                     <Typography>
                         <TodaysWork/>
-                        <Button variant="contained">
-                            저장
-                        </Button>
                     </Typography>       
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography>
-                        멤버 상태
-                    </Typography>
-                    <Typography>
-                        새 테이블로 멤버 오늘 할일 종료 여부 불러오기
-                    </Typography>
+                    <TodoIndivMember />
                 </Grid>
             </Grid>
             </Paper>

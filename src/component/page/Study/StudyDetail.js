@@ -5,7 +5,7 @@ import MemberPost from "../../common/study/MemberPost";
 import NonMemberPost from "../../common/study/NonMemberPost";
 import { useSelector, useDispatch } from 'react-redux';
 import { memberState } from '../../../store/member';
-import { studyRoomState } from '../../../store/studyRoomNum'
+import { studyRoomState } from '../../../store/studyRoomHost'
 import Loading from "../../common/Loading";
 
 
@@ -13,9 +13,10 @@ const StudyDetail = () => {
 
     const [ confirmed, setConfirmed ] = useState(false)
     const [ post, setPost ] = useState('')
+    const [limmem, setLimmem] = useState(0)
     const dispatch = useDispatch()
     const member = useSelector((state) => state.member.value)
-    const number = useSelector((state) => state.studynumber.value)
+    const host = useSelector((state) => state.studyroomhost.value)
     const params = useParams();
     const navigate = useNavigate()
 
@@ -28,7 +29,7 @@ const StudyDetail = () => {
             if(res.data.message === "confirmed"){
                 console.log('confirmed')
                 setConfirmed(true)
-                dispatch(studyRoomState(params.id))
+                dispatch(studyRoomState(res.data.hostid))
             } else if (res.data.message === "404"){
                 console.log('404')
                 navigate('/Error')
@@ -36,14 +37,17 @@ const StudyDetail = () => {
                 console.log('waiting')
                 dispatch(memberState(true))
                 setPost(res.data.result)
+                setLimmem(res.data.limmem)
             } else if (res.data.message === "nonconfirmed"){
                 console.log('nonconfirmed')
                 setPost(res.data.result)
+                setLimmem(res.data.limmem)
                 dispatch(memberState(false))
             } else {
                 console.log('err')
             }
             setLoading(false)
+            
         })
     }
 
@@ -54,7 +58,7 @@ const StudyDetail = () => {
     return (
         <>
             {loading ? <Loading /> : 
-            confirmed ? <MemberPost /> : <NonMemberPost prop={post[0]}/>}
+            confirmed ? <MemberPost /> : <NonMemberPost prop={[post[0], limmem[0]]}/>}
         </>
     )
     

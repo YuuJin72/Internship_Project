@@ -110,7 +110,6 @@ const Settings = () => {
     // 날짜 선택
     const [objDate, setObjDate] = useState(dayjs())
 
-
     // 저장
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -120,14 +119,13 @@ const Settings = () => {
             tag: data.get('tag'),
             detail: data.get('detail'),
             main_obj: data.get('main_obj'),
-            main_obj_date: objDate.format('L')
+            main_obj_date: objDate.format("YYYY-MM-DD")
         }).then((res) => {
             if(res.data.message === 'success'){
                 Success('저장되었습니다.')
-                setMember(res.data.result)
             } else{
                 Failure('에러가 발생했습니다.')
-            }
+            } fetchPost()
         })
     }
 

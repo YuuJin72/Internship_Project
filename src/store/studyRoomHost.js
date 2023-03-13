@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const studyRoomSlice = createSlice({
-    name: "studynumber",
-    initialState: { value: 0 },
+    name: "studyroomhost",
+    initialState: { value: '' },
     reducers: {
         studyRoomState: (state, action) => {
             state.value = action.payload
