@@ -17,7 +17,7 @@ import nicknameReducer from './signup/signnickname'
 import pwcReducer from './signup/signpwc'
 import memberReducer from './member'
 import searchReducer from './search'
-import studyRoomNumReducer from './studyRoomNum'
+import studyRoomHostReducer from './studyRoomHost'
 import studyNavReducer from './studyNav'
 
 const persistConfig = {
@@ -34,7 +34,7 @@ const rootReducer = combineReducers({
   email : emailReducer,
   nickname: nicknameReducer,
   search: searchReducer,
-  studynumber : studyRoomNumReducer,
+  studyroomhost : studyRoomHostReducer,
   studynavnumber : studyNavReducer
 });
 

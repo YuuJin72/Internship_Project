@@ -5,10 +5,11 @@ import { useParams, useNavigate } from "react-router";
 import theme from '../../stylecolor/style'
 import axios from "axios";
 import { Modal } from "../../../modal/Modal";
+import { useSelector } from "react-redux";
 
 const Board = () => {
 
-    const [boardHost, setBoardHost] = useState('')
+    const [boardWriter, setBoardWriter] = useState('')
     const [board, setBoard] = useState('')
     const [boardState, setBoardState] = useState(false)
     const [boardList, setBoardList] = useState([])
@@ -23,12 +24,14 @@ const Board = () => {
     const navigate = useNavigate()
     const { Success, Failure } = Modal()
 
+    const host = useSelector((state) => state.studyroomhost.value)
+
     const fetchPost = () => {
         axios.post(`http://localhost:8080/study/${params.id}/board`)
         .then((res) => {
             if(res.data.message === 'success'){
                 setBoardList(res.data.result)
-                setBoardHost(res.data.hostid)
+                setBoardWriter(res.data.writer)
             }
         })
     }
@@ -182,16 +185,16 @@ const Board = () => {
                             </Typography>
                         </Grid>
                         <Grid item xs={10} sx={{mt: 2, mb: 2}}>
-                            {!boardEditState && <Typography>
+                            {(!boardEditState ||  el._id !== boardNumber) && <Typography>
                                 {el?.detail}
                             </Typography>}
-                            {boardEditState && el._id === boardNumber &&  <TextField fullWidth value={boardEdit} onChange={handBoardEditChange}/>}
+                            {boardEditState && (el.id === boardWriter || boardWriter === host) && el._id === boardNumber && <TextField fullWidth value={boardEdit} onChange={handBoardEditChange}/>}
                         </Grid>
                         <Grid item xs={2} sx={{mt: 2, mb: 2}}>
-                            {!boardEditState && <Button variant='contained' id={el?._id} onClick={handleEdit}>수정</Button>}
-                            {boardEditState &&  el._id === boardNumber && <Button variant='contained' id={el?._id} onClick={handleEditComplete}>완료</Button>}<p/>
-                            {!boardEditState && <Button variant='contained' id={el?._id} onClick={handleDelete}>삭제</Button>}
-                            {boardEditState &&  el._id === boardNumber && <Button variant='contained' id={el?._id} onClick={handleEditCancel}>취소</Button>}
+                            {!boardEditState && (el.id === boardWriter || boardWriter === host) && <Button variant='contained' id={el?._id} onClick={handleEdit}>수정</Button>}
+                            {boardEditState && (el.id === boardWriter || boardWriter === host) && el._id === boardNumber && <Button variant='contained' id={el?._id} onClick={handleEditComplete}>완료</Button>}<p/>
+                            {!boardEditState && (el.id === boardWriter || boardWriter === host) && <Button variant='contained' id={el?._id} onClick={handleDelete}>삭제</Button>}
+                            {boardEditState &&  (el.id === boardWriter || boardWriter === host) && el._id === boardNumber && <Button variant='contained' id={el?._id} onClick={handleEditCancel}>취소</Button>}
                         </Grid>
                     </Grid>
                 </Box>))}

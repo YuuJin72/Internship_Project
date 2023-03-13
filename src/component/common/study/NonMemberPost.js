@@ -9,10 +9,8 @@ import { memberState } from '../../../store/member';
 import { loginState } from '../../../store/user';
 
 const NonMemberPost = (props) => {
-
     const member = useSelector((state) => state.member.value)
     const islogin = useSelector((state => state.user.value))
-    const user = useSelector((state) => state.user.value) 
 
     const params = useParams();
     const dispatch = useDispatch()
@@ -45,16 +43,19 @@ const NonMemberPost = (props) => {
                 status: member
             })
             .then((res) => {
-                if(res.data.message === 'request_success'){
-                    Success('신청이 완료되었습니다.')
-                    dispatch(memberState(true))
-                } else if(res.data.message === 'reqcancel_success'){
-                    Success('신청이 취소되었습니다.')
-                    dispatch(memberState(false))
-                } else {
-                    Failure('에러가 발생했습니다.')
-                    dispatch(loginState(false))
-                }
+              if(res.data.message === 'overlimit'){
+                Warning('제한 인원수를 초과했습니다.')
+              }
+              else if(res.data.message === 'request_success'){
+                  Success('신청이 완료되었습니다.')
+                  dispatch(memberState(true))
+              } else if(res.data.message === 'reqcancel_success'){
+                  Success('신청이 취소되었습니다.')
+                  dispatch(memberState(false))
+              } else {
+                  Failure('에러가 발생했습니다.')
+                  dispatch(loginState(false))
+              }
             })
         }
     }
@@ -79,7 +80,7 @@ const NonMemberPost = (props) => {
                     mb: '3rem'
                   }}
                 >
-                 {props.prop?.title}
+                 {props.prop[0]?.title}
             </Typography>
             <div className='create-background'>
                 <div className='create-background-left'>
@@ -97,7 +98,7 @@ const NonMemberPost = (props) => {
                     mb: '3rem'
                   }}
                 >
-                  태그 : {props.prop?.tag}
+                  태그 : {props.prop[0]?.tag}
             </Typography><p/>
             <Typography
                   component="h3"
@@ -110,7 +111,20 @@ const NonMemberPost = (props) => {
                     mb: '3rem'
                   }}
                 >
-                  방장 : {props.prop?.hostid}
+                  방장 : {props.prop[0]?.hostid}
+            </Typography><p/>
+            <Typography
+                  component="h3"
+                  variant="h3"
+                  align="center"
+                  color="text.primary"
+                  gutterBottom
+                  sx={{
+                    mt: '3rem',
+                    mb: '3rem'
+                  }}
+                >
+                  인원 : {props.prop[1]?.total} / {props.prop[0]?.limit_member}
             </Typography><p/>
             <Typography
                   component="h3"
@@ -136,7 +150,7 @@ const NonMemberPost = (props) => {
                     mb: '3rem'
                   }}
                 >
-                  {props.prop?.detail}
+                  {props.prop[0]?.detail}
             </Typography><p/>
                 </div> 
                 <div>

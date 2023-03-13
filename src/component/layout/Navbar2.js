@@ -43,10 +43,12 @@ const Navbar2 = () => {
   
   const onClickHome = () => {
     navigate('/')
+    handleMobileMenuClose()
   }
 
   const onClickStudy = () => {
     navigate('/study')
+    handleMobileMenuClose()
   }
 
   const onClickLogIn = () => {
@@ -133,13 +135,13 @@ const Navbar2 = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={onClickHome}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
             <HomeIcon />
         </IconButton>
-        <p>Messages</p>
+        <p>Home</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={onClickStudy}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -147,9 +149,9 @@ const Navbar2 = () => {
         >
           <AutoStoriesIcon />
         </IconButton>
-        <p>Notifications</p>
+        <p>Study</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      {!user &&  <MenuItem onClick={onClickLogIn}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -159,8 +161,44 @@ const Navbar2 = () => {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+          로그인
+      </MenuItem>}
+      {user && <MenuItem onClick={onClickLogout}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        로그아웃
+      </MenuItem>}
+      {!user && <MenuItem onClick={onClickSignup}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        회원가입
+      </MenuItem>}
+      {user && <MenuItem onClick={onClickLogIn}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+          내 정보 보기
+      </MenuItem>}
     </Menu>
   );
 
