@@ -54,7 +54,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: false,
-        maxAge: 1000 * 60 * 60 * 1  // 1시간
+        maxAge: 1000 * 60 * 60 * 12  // 12시간
     },
     store: new SessionFileStore()
 }));
@@ -319,7 +319,6 @@ app.get('/study/isconfirmed/:id', (req, res) => {
 
   con.query(numSql, [Number(req.params.id)], (err, result) => {
     const limmem = result
-    console.log(result)
       if(!req.isAuthenticated()){
           con.query(listSql, [Number(req.params.id)], (err, result) => {
             res.json({
@@ -434,7 +433,6 @@ app.post('/study/search', (req, res) => {
 // 스터디 생성
 app.post('/study/create', (req, res) => {
   const limit = Number(req.body.limit_member)
-  console.log(limit)
   if(limit < 2 || limit > 10){
     res.json({message: "overlimit"})
   } else{
@@ -528,7 +526,7 @@ app.post('/study/:id/schedule', (req, res) => {
   })
 })
 
-// 스터디룸 todo - 일정 불러오기
+// 스터디룸 todo - 개인 일정 불러오기
 app.post('/study/:id/todoindiv', (req, res) => {
   const delSql = `delete from studysubobject
   where _num = ?
@@ -580,13 +578,24 @@ app.post('/study/:id/tododelete', (req, res) => {
 
 // 스터디룸 todo - 개인 할 일 완료
 app.post('/study/:id/todofinish', (req, res) => {
-  const sql = `update studysubobject s
-  set isfinished = 1
+  const searchSql = `
+  select * from studysubobject
   where _num = ?
-  and s.id = ?`
-  con.query(sql, [Number(req.params.id), req.user[0].id], (err, result) => {
+  and id = ?`
+  con.query(searchSql, [Number(req.params.id), req.user[0].id], (err, result) => {
     if(err) res.json({message : 'err'})
-    else res.json({message : 'success'})
+    else if(result.length === 0){
+      res.json({message : 'no_result'})
+    } else {
+      const sql = `update studysubobject s
+      set isfinished = 1
+      where _num = ?
+      and s.id = ?`
+      con.query(sql, [Number(req.params.id), req.user[0].id], (err, result) => {
+        if(err) res.json({message : 'err'})
+        else res.json({message : 'success'})
+      })
+    }
   })
 })
 
@@ -594,13 +603,13 @@ app.post('/study/:id/todofinish', (req, res) => {
 // 스터디룸 todo - 멤버 상태
 app.post('/study/:id/todomember', (req, res) => {
   const sql = `
-  select distinct sm.id as mem, isfinished, todotype from studymember sm
-  left join studysubobject s 
-  on sm.id = s.id
-  where sm._num = ?
-  and todotype = 0
-  or todotype is null`
-  con.query(sql, [req.params.id],(err, result) => {
+select distinct sm.id as mem, isfinished, todotype from studymember sm
+left join studysubobject s 
+on sm.id = s.id
+and sm._num = s._num
+where sm._num = ?
+and (todotype = 0 or todotype is null)`
+  con.query(sql, [Number(req.params.id)],(err, result) => {
     if(err) res.json({message : 'err'})
     else res.json({
       message : 'success',
@@ -841,6 +850,93 @@ app.post('/study/:id/settingsave', (req, res) => {
     if(err) res.json({message: 'error'})
     else {
       res.json({message: 'success'})
+    }
+  })
+})
+
+// ================================================================== //
+// mypage - 내 정보
+app.get('/myinfo', (req, res) => {
+  const sql = `
+  select * from user
+  where id = ?`
+
+  con.query(sql, [req.user[0].id], (err, result) => {
+    if(err) res.json({message: 'error'})
+    else {
+      res.json({
+        message: 'success',
+        result: result[0]
+      })
+    }
+  })
+})
+
+// mypage - 닉네임 수정
+app.post('/myinfo/changenickname', (req, res) => {
+  const sql = `
+  update user
+  set nickname = ?
+  where id = ?`
+
+  con.query(sql, [req.body.nickname, req.user[0].id], (err, result) => {
+    if(err) res.json({message: 'error'})
+    else {
+      res.json({message: 'success'})
+    }
+  })
+})
+
+// mypage - 내 스터디
+app.get('/myinfo/mystudy', (req, res) => {
+  const sql = `
+  select * from studymember sm
+  join studylist sl 
+  on sm._num = sl._num
+  and sm.id = ?`
+  con.query(sql, [req.user[0].id], (err, result) => {
+    if(err) res.json({message: 'error'})
+    else {
+      res.json({
+        message: 'success',
+        result: result
+      })
+    }
+  })
+})
+
+// mypage - 비밀번호 확인
+app.post('/myinfo/pwcheck', (req, res) => {
+  const sql = `
+  select * from user
+  where id = ?
+  and pw = ?`
+  con.query(sql, [req.user[0].id, req.body.pw], (err, result) => {
+    if(err) res.json({message: 'error'})
+    else if(result.length !== 0){
+      res.json({
+        message: 'success',
+      })
+    } else {
+      res.json({
+        message: 'wrong_pw',
+      })
+    }
+  })
+})
+
+app.post('/myinfo/pwchange', (req, res) => {
+  const sql = `
+  update user
+  set pw = ?
+  where id = ?
+  `
+  con.query(sql, [req.body.pw, req.user[0].id], (err, result) => {
+    if(err) res.json({message: 'error'})
+    else{
+      res.json({
+        message: 'success'
+      })
     }
   })
 })

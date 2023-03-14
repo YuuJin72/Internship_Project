@@ -8,10 +8,11 @@ import { Modal } from '../../../modal/Modal';
 const TodaysWork = () => {
 
   const params = useParams()
-  const { Success, Failure } = Modal()
+  const { Success, Warning, Failure } = Modal()
   const [todoList, setTodoList] = useState([]);
   const [todo, setTodo] = useState('')
   const [todoFinished, setTodoFinished] = useState(false)
+
   const getFormatDate = (date) => {
     let year = date.getFullYear();
     let month = (1 + date.getMonth())
@@ -80,7 +81,10 @@ let today = getFormatDate(new Date())
     axios.post(`http://localhost:8080/study/${params.id}/todofinish`)
     .then((res) => {
       if(res.data.message === 'success'){
+        fetchPost()
         Success('오늘의 공부를 완료하였습니다!')
+      } else if(res.data.message === 'no_result'){
+        Warning('등록된 할 일이 없습니다.')
       } else {
         Failure('에러가 발생했습니다.')
       }
@@ -94,7 +98,7 @@ let today = getFormatDate(new Date())
         <TextField placeholder='할 일을 입력하세요' fullWidth value={todo} onChange={handleChangeTodo} />
       </Grid>
       <Grid item xs={2}>
-        <Button variant='contained' onClick={handleSubmitTodo}> + </Button>
+        <Button variant='contained' disabled={todoFinished} onClick={handleSubmitTodo}> + </Button>
       </Grid>
     </Grid>
     {todoList && todoList.map((el) => (
@@ -103,7 +107,7 @@ let today = getFormatDate(new Date())
               <Typography> {el?.title} </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Button variant='contained' id={el._id} onClick={handleDeleteTodo} >삭제</Button>
+              <Button variant='contained' id={el._id} disabled={todoFinished} onClick={handleDeleteTodo} >삭제</Button>
             </Grid>
       </Grid>
     ))}

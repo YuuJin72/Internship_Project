@@ -9,22 +9,23 @@ const TodoIndivMember = () => {
 
     const [todoMember, setTodoMember] = useState([])
 
-    const fetchPost = () => {
-        axios.post(`http://localhost:8080/study/${params.id}/todomember`)
-        .then((res) => {
-            
-            if(res.data.message === 'success'){
-                setTodoMember(res.data.result)
-            }
-            else{
-                console.log('err')
-            }
-        })
-    }
+    
 
     useEffect(() => {
+        const fetchPost = () => {
+            axios.post(`http://localhost:8080/study/${params.id}/todomember`)
+            .then((res) => {
+                
+                if(res.data.message === 'success'){
+                    setTodoMember(res.data.result)
+                }
+                else{
+                    console.log('err')
+                }
+            })
+        }
         fetchPost()
-    }, [])
+    }, [todoMember])
 
     return(
         <>

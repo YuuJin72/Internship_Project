@@ -41,27 +41,32 @@ const Navbar2 = () => {
   const navigate = useNavigate()
   const { Success } = Modal();
   
-  const onClickHome = () => {
+  const handleHome = () => {
     navigate('/')
     handleMobileMenuClose()
   }
 
-  const onClickStudy = () => {
+  const handleStudy = () => {
     navigate('/study')
     handleMobileMenuClose()
   }
 
-  const onClickLogIn = () => {
+  const handleLogIn = () => {
     navigate('/signin')
     handleMenuClose()
   }
 
-  const onClickSignup = () => {
+  const handleSignup = () => {
     navigate('/signup')
     handleMenuClose()
   }
 
-  const onClickLogout = () => {
+  const handleMyPage = () => {
+    navigate('/mypage')
+    handleMenuClose()
+  }
+
+  const handleLogout = () => {
     axios.post("http://localhost:8080/signout")
     .then((res) => {
       handleMenuClose()
@@ -111,10 +116,10 @@ const Navbar2 = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {!user && <MenuItem onClick={onClickLogIn}>로그인</MenuItem>}
-      {!user && <MenuItem onClick={onClickSignup}>회원가입</MenuItem>}
-      {user && <MenuItem onClick={onClickLogout}>로그아웃</MenuItem>}
-      {user && <MenuItem onClick={onClickLogIn}>내 정보 보기</MenuItem>}
+      {!user && <MenuItem onClick={handleLogIn}>로그인</MenuItem>}
+      {!user && <MenuItem onClick={handleSignup}>회원가입</MenuItem>}
+      {user && <MenuItem onClick={handleLogout}>로그아웃</MenuItem>}
+      {user && <MenuItem onClick={handleMyPage}>내 정보 보기</MenuItem>}
     </Menu>
   );
 
@@ -135,13 +140,13 @@ const Navbar2 = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={onClickHome}>
+      <MenuItem onClick={handleHome}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
             <HomeIcon />
         </IconButton>
         <p>Home</p>
       </MenuItem>
-      <MenuItem onClick={onClickStudy}>
+      <MenuItem onClick={handleStudy}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -151,7 +156,7 @@ const Navbar2 = () => {
         </IconButton>
         <p>Study</p>
       </MenuItem>
-      {!user &&  <MenuItem onClick={onClickLogIn}>
+      {!user &&  <MenuItem onClick={handleLogIn}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -163,7 +168,7 @@ const Navbar2 = () => {
         </IconButton>
           로그인
       </MenuItem>}
-      {user && <MenuItem onClick={onClickLogout}>
+      {user && <MenuItem onClick={handleLogout}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -175,7 +180,7 @@ const Navbar2 = () => {
         </IconButton>
         로그아웃
       </MenuItem>}
-      {!user && <MenuItem onClick={onClickSignup}>
+      {!user && <MenuItem onClick={handleSignup}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -187,7 +192,7 @@ const Navbar2 = () => {
         </IconButton>
         회원가입
       </MenuItem>}
-      {user && <MenuItem onClick={onClickLogIn}>
+      {user && <MenuItem onClick={handleMyPage}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -220,13 +225,13 @@ const Navbar2 = () => {
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton size="large" 
               color="inherit" 
-              onClick={onClickHome}>
+              onClick={handleHome}>
                 <HomeIcon  />
               </IconButton>
               <IconButton
                 size="large"
                 color="inherit"
-                onClick={onClickStudy}
+                onClick={handleStudy}
               >
                 <AutoStoriesIcon />
               </IconButton>
