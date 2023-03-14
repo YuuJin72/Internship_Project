@@ -6,65 +6,69 @@ import { Modal } from "../../../modal/Modal";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useSelector, useDispatch } from "react-redux";
+import { scheduleState } from '../../../../store/schedule'
 import dayjs from "dayjs";
 
 const TodoAllMember = () => {
-    const params = useParams()
-    const { Success, Failure } = Modal()
-    const [todo, setTodo] = useState('')
-    const [todoList, setTodoList] = useState([])
+  const params = useParams()
+  const { Success, Failure } = Modal()
+  const [todo, setTodo] = useState('')
+  const [todoList, setTodoList] = useState([])
+  const [objDate, setObjDate] = useState(dayjs())
 
-    const [objDate, setObjDate] = useState(dayjs())
+  const schedule = useSelector((state) => state.schedule.value)
+  const dispatch = useDispatch()
 
-    const fetchPost = () => {
-        axios.post(`http://localhost:8080/study/${params.id}/todoall`)
-        .then((res) => {
-          if(res.data.message === 'success'){
-            setTodoList(res.data.result)
-          } else {
-            console.log('err')
-          }
-        })
-      }
-    
-      useEffect(() => {
-        fetchPost()
-      },[])
-    
-      const handleChangeTodo = (e) => {
-        setTodo(e.target.value)
-      }
-    
-      const handleSubmitTodo = () => {
-        axios.post(`http://localhost:8080/study/${params.id}/todoallsubmit`,{
-          title: todo,
-          date: objDate.format("YYYY-MM-DD")
-        })
-        .then((res) => {
-          if(res.data.message === 'success'){
-            console.log('success')
-            fetchPost()
-          } else {
-            console.log('err')
-          }
-        })
-      }
-    
-      const handleDeleteTodo = (e) => {
-        console.log(e.target.id)
-        axios.post(`http://localhost:8080/study/${params.id}/tododelete`, {
-          _id: e.target.id,
-        })
-        .then((res) => {
-          if(res.data.message === 'success'){
-            console.log('success')
-            fetchPost()
-          } else {
-            console.log('err')
-          }
-        })
+  const fetchPost = () => {
+      axios.post(`http://localhost:8080/study/${params.id}/todoall`)
+      .then((res) => {
+        if(res.data.message === 'success'){
+          setTodoList(res.data.result)
+        } else {
+          console.log('err')
+        }
+      })
     }
-    
+  
+    useEffect(() => {
+      fetchPost()
+    },[])
+  
+    const handleChangeTodo = (e) => {
+      setTodo(e.target.value)
+    }
+  
+    const handleSubmitTodo = () => {
+      axios.post(`http://localhost:8080/study/${params.id}/todoallsubmit`,{
+        title: todo,
+        date: objDate.format("YYYY-MM-DD")
+      })
+      .then((res) => {
+        if(res.data.message === 'success'){
+          console.log('success')
+          fetchPost()
+        } else {
+          console.log('err')
+        }
+        dispatch(scheduleState(todoList))
+      })
+    }
+  
+    const handleDeleteTodo = (e) => {
+      axios.post(`http://localhost:8080/study/${params.id}/tododelete`, {
+        _id: e.target.id,
+      })
+      .then((res) => {
+        if(res.data.message === 'success'){
+          console.log('success')
+          fetchPost()
+        } else {
+          console.log('err')
+        }
+      })
+    }
+    console.log(todoList)
     return(
         <>
             전체스케쥴

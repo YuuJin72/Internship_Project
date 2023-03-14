@@ -296,22 +296,7 @@ const SignUp = () => {
                 </Grid>
                 {/* <p>{errors.nickname?.message}</p> */}
                 <Grid item xs={12} mt='1rem'/>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                      color='green'
-                      size="small"
-                      required
-                      fullWidth
-                      id="password"
-                      label="비밀번호"
-                      type="password"
-                      name="password"
-                      value={password}
-                      onChange={handlePassword}
-                      error= {passwordValid}
-                      helperText={passwordErrorMessage}
-                    />
-                </Grid>
+                
                 <Grid item xs={12} sm={6} />
                 <Grid item xs={12} sm={6}>
                     <TextField
