@@ -37,11 +37,11 @@ const TodoIndivMember = () => {
                     borderRadius={3} 
                     height='2rem' 
                     alignItems='center'>
-                <Grid item xs={6}>
+                <Grid key={el?.id} item xs={6}>
                     {el?.mem}
                 </Grid>
                 <Grid item xs={6}>
-                    {el.isfinished === 1 ? '완료' : '미완료'}
+                    {el?.isfinished === 1 ? '완료' : '미완료'}
                 </Grid>
             </Grid>
             ))}

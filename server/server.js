@@ -503,17 +503,26 @@ app.post('/study/:id/home', (req, res) => {
   WHERE sm._num = ?
   AND sm.confirmed = 1`
   con.query(sql, [Number(req.params.id)], (err, result) => {
-    res.send({
-      message: 'success',
-      result: result
+    const homeresult = result
+    
+    const sql = `select * from studysubobject
+    where _num = ?
+    and todotype = 1`
+    con.query(sql, [Number(req.params.id)], (err, result) => {
+      if(err) res.json({message : 'err'})
+      else res.json({
+        message : 'success',
+        result: result,
+        homeresult: homeresult
+      })
     })
   })
 })
 // ================================================================== //
-// 스터디룸 스케쥴 로더
+// 스터디룸 todo - myschedule.js 스케쥴 로더
 app.post('/study/:id/schedule', (req, res) => {
   const sql = `
-  SELECT sl.main_obj as title, sl.main_obj_date as date FROM studylist sl
+  SELECT distinct sl.main_obj as title, sl.main_obj_date as date FROM studylist sl
   JOIN studymember sm 
   ON sm._num = sl._num
   WHERE sm._num = ?
@@ -521,9 +530,18 @@ app.post('/study/:id/schedule', (req, res) => {
   con.query(sql, [Number(req.params.id)], (err, result) => {
     res.send({
       message: 'success',
-      result: result[0]
+      result: result
     })
   })
+})
+
+app.get('/study/:id/todoschedule', (req, res) => {
+  const sql = `
+  SELECT distinct main_obj as title, main_obj_date as start FROM studylist sl
+  JOIN studymember sm 
+  ON sm._num = sl._num
+  WHERE sm._num = 24
+  AND sm.confirmed = 1`
 })
 
 // 스터디룸 todo - 개인 일정 불러오기

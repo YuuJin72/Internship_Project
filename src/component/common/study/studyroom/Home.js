@@ -23,22 +23,51 @@ const Home = () => {
       });
     
     const [member, setMember] = useState([])
+    const [ scheduleList, setScheduleList ] = useState('')
+    const [mainSchedule, setMainSchedule] = useState({
+        title: '',
+        start: '',
+        color: '#FFFF00'
+    })
+    const [isAwaiting, setIsAwaiting] = useState(false);
     const [D_day, setD_day] = useState('')
     const params = useParams()
 
     const fetchPost = () => {
+        setIsAwaiting(false)
         axios.post(`http://localhost:8080/study/${params.id}/home`)
         .then((res) => {
             if(res.data.message === 'success'){
+                console.log(res.data.homeresult)
                 const today = new Date()
-                const dDay = new Date(res.data.result[0].main_obj_date)
+                const dDay = new Date(res.data.homeresult[0].main_obj_date)
                 const remainDay = Math.ceil((dDay - today) / (1000 * 60 * 60 * 24))
-                setMember(res.data.result)
+                setMainSchedule({
+                    title: res.data.homeresult[0].main_obj,
+                    start: res.data.homeresult[0].main_obj_date,
+                    color: '#FF0000'
+                })
+                setMember(res.data.homeresult)
                 setD_day(remainDay)
             }
         })
+        .then(
+        axios.post(`http://localhost:8080/study/${params.id}/todoall`)
+        .then((res) => {
+          if(res.data.message === 'success'){
+            setScheduleList(res.data.result)
+          } else {
+            console.log('err')
+          }
+
+        })
+        )
+        setScheduleList(scheduleList => [...scheduleList, mainSchedule])
+        setIsAwaiting(true)
     }
-    
+
+
+     
 
     useEffect(() => {
         fetchPost()
@@ -64,7 +93,7 @@ const Home = () => {
                     width: '100%',
                         }}
                     >
-                        <MyCalendar/>
+                        {isAwaiting && <MyCalendar prop={scheduleList}/>}
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>

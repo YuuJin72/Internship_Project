@@ -32,7 +32,7 @@ let today = getFormatDate(new Date())
     .then((res) => {
       if(res.data.message === 'success'){
         setTodoList(res.data.result)
-        setTodoFinished(!!res.data.result[0].isfinished)
+        setTodoFinished(!!res.data.result[0]?.isfinished)
       } else {
         console.log('err')
       }

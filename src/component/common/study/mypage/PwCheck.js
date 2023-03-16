@@ -13,7 +13,6 @@ const PwCheck = ({isCorrect, getIsCorrect}) => {
         axios.post(`http://localhost:8080/myinfo/pwcheck`, {
             pw: data.get('password')
         }).then((res) => {
-            console.log(res.data.message)
             if(res.data.message === 'success'){
                 getIsCorrect(true)
             } else if(res.data.message === 'wrong_pw'){

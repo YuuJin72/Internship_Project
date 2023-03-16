@@ -56,8 +56,6 @@ const PwChange = () => {
         }
     }
 
-    console.log({pwState, passwordValid})
-    console.log(password)
     return(
         <>
             <Box component="form" noValidate onSubmit={handleSubmit}>

@@ -23,7 +23,8 @@ const MyPageStudy = () => {
     }
 
     const handleOnClick = (e) => {
-        console.log(e.target.id)
+        const target = e.target.id
+        target !== '' && navigate(`/study/${target}`)
     }
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const MyPageStudy = () => {
 
     return(
         <>
-            <Grid container textAlign='center' alignItems='flex-start' spacing={3}>
+            <Grid container textAlign='center' spacing={3}>
                 <Grid item xs={6}>
                     <Typography>
                         내 스터디 
@@ -45,42 +46,46 @@ const MyPageStudy = () => {
                 </Grid>
                 <Grid item xs={6}>
                 {mystudy && mystudy.map((el) => (
-                    el.confirmed === 1 && <Box key={el._num} id={el._num} border={1} onClick={handleOnClick} fullWidth sx={{height: '5rem'}}>
-                        <Grid border={1} item xs>
-                            <Typography id={el._num}>
-                                {el?._num}
-                            </Typography>
-                        </Grid>
-                        <Grid border={1} id={el._num} item xs>
-                            <Typography>
-                                {el?.title}
-                            </Typography>
-                        </Grid>
-                        <Grid border={1} id={el._num} item xs>
-                            <Typography>
-                                {el?.hostid}
-                            </Typography>
+                    el.confirmed === 1 && <Box key={el._num} id={el._num} border={1} onClick={handleOnClick} sx={{height: '5rem'}}>
+                        <Grid container alignItems='center'>
+                            <Grid item xs={2} >
+                                <Typography id={el._num}>
+                                    {el?._num}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs>
+                                <Typography id={el._num}>
+                                    {el?.title}
+                                </Typography >
+                            </Grid>
+                            <Grid item xs>
+                                <Typography id={el._num}>
+                                    {el?.hostid}
+                                </Typography>
+                            </Grid>
                         </Grid>
                     </Box>
                 ))}
                 </Grid>
                 <Grid item xs={6}>
                 {mystudy && mystudy.map((el) => (
-                    el.confirmed === 0 && <Box key={el._num} id={el._num} border={1} onClick={handleOnClick} fullWidth sx={{height: '5rem'}}>
-                        <Grid border={1} id={el._num} item xs>
-                            <Typography>
-                                {el?._num}
-                            </Typography>
-                        </Grid>
-                        <Grid border={1} id={el._num} item xs>
-                            <Typography>
-                                {el?.title}
-                            </Typography>
-                        </Grid>
-                        <Grid border={1} id={el._num} item xs>
-                            <Typography>
-                                {el?.hostid}
-                            </Typography>
+                    el.confirmed === 0 && <Box key={el._num} id={el._num} border={1} onClick={handleOnClick} sx={{height: '5rem'}}>
+                        <Grid container>
+                            <Grid item xs={2} >
+                                <Typography id={el._num}>
+                                    {el?._num}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs>
+                                <Typography id={el._num}>
+                                    {el?.title}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs>
+                                <Typography id={el._num}>
+                                    {el?.hostid}
+                                </Typography>
+                            </Grid>
                         </Grid>
                     </Box>
                 ))}
