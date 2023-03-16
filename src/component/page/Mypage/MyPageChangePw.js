@@ -9,7 +9,6 @@ const MyPageChangePw = () => {
     const getIsCorrect = (isCorrect) => {
         SetIsCorrect(isCorrect)
     }
-    console.log(isCorrect)
 
     useEffect(() => {
 
