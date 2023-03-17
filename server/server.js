@@ -64,46 +64,6 @@ const localStrategy = passportLocal.Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
 
-// =================================================================================== //
-const storage = multer.diskStorage({
-  destination: function (req, file, cb){
-    cb(null, '../src/uploads')
-  },
-  filename: function(req, file, cb){
-    const ext = path.extname(file.originalname)
-    cb(null, true)
-  }
-})
-
-const upload = multer({storage: storage})
-
-// app.post('/upload', upload.single('image'), (req, res) => { // 'image'라는 이름은 multipart.html의 <input type="file" name="image"> 에서 폼데이터 이름으로 온 것이다.
-    
-//   // upload.single('image')의 업로드 정보가 req.file에 넣어진다.
-//   // <input type="text" name="title"> 의 텍스트 정보가 req.body에 넣어진다.
-//   console.log(req.file, req.body); 
-//   res.send('ok');
-// })
-
-app.post('/upload', upload.single('image'), (req, res, next)=>{
-  console.log(req.body)
-  console.log(req.files)
-  res.json({ message: 'success' })
-  })
-
-// app.post('/upload', (req, res) => {
-//   console.log('upload')
-//   const form = new formidable.IncomingForm();
-//   form.parse(req, (err, field, file) => {
-//     console.log(req.body)
-//     if(err){throw err}
-//     else{
-//       const fileData = file.file
-//       console.log(fileData.originalFilename)
-//     }
-//   })
-// })
-// =================================================================================== //
 
 // 로그인
 passport.use(new localStrategy({
@@ -651,8 +611,8 @@ app.post('/study/:id/todoall', (req, res) => {
   })
 })
 
+// 스터디룸 todo - 전체스케쥴 추가
 app.post('/study/:id/todoallsubmit', (req, res) => {
-
   const sql = `
   insert into studysubobject
   (_num, id, start, end, title, todotype, isfinished)
@@ -858,7 +818,6 @@ app.post('/study/:id/settingsave', (req, res) => {
   main_obj_date = ?
   where _num = ?
 `
- 
   const data = [req.body.title, req.body.tag, 
     req.body.detail, req.body.main_obj, 
     req.body.main_obj_date,
@@ -906,13 +865,24 @@ app.post('/myinfo/changenickname', (req, res) => {
 })
 
 // mypage - 내 스터디
-app.get('/myinfo/mystudy', (req, res) => {
+app.post('/myinfo/mystudy', (req, res) => {
   const sql = `
-  select * from studymember sm
+  select *, 
+  ceil((
+    select count(confirmed) from studymember sm
+    where  sm.id = ?
+    and confirmed = 1
+  ) / 5) as confirmNum, 
+  ceil((
+    select count(confirmed) from studymember sm
+    where  sm.id = ?
+    and confirmed = 0
+  ) / 5) as nonConfirmNum 
+  from studymember sm
   join studylist sl 
   on sm._num = sl._num
   and sm.id = ?`
-  con.query(sql, [req.user[0].id], (err, result) => {
+  con.query(sql , [req.user[0].id, req.user[0].id, req.user[0].id], (err, result) => {
     if(err) res.json({message: 'error'})
     else {
       res.json({
@@ -943,6 +913,7 @@ app.post('/myinfo/pwcheck', (req, res) => {
   })
 })
 
+// mypage - 비밀번호 수정
 app.post('/myinfo/pwchange', (req, res) => {
   const sql = `
   update user
@@ -958,3 +929,50 @@ app.post('/myinfo/pwchange', (req, res) => {
     }
   })
 })
+
+// ===================== 테스트쿼리 ========================//
+app.post('/test', (req, res) => {
+  const sql = `
+  select *, 
+  ceil((
+    select count(confirmed) from studymember sm
+    where  sm.id = ?
+    and confirmed = 1
+  ) / 5) as confirmNum, 
+  ceil((
+    select count(confirmed) from studymember sm
+    where  sm.id = ?
+    and confirmed = 0
+  ) / 5) as nonConfirmNum 
+  from studymember sm
+  join studylist sl 
+  on sm._num = sl._num
+  and sm.id = ?`
+  con.query(sql , [req.user[0].id, req.user[0].id, req.user[0].id], (err, result) => {
+    if(err) res.json({message: 'error'})
+    else {
+      res.json({
+        message: 'success',
+        result: result
+      })
+    }
+  })
+})
+
+
+// app.get('/myinfo/mystudy', (req, res) => {
+//   const sql = `
+//   select * from studymember sm
+//   join studylist sl 
+//   on sm._num = sl._num
+//   and sm.id = ?`
+//   con.query(sql, [req.user[0].id], (err, result) => {
+//     if(err) res.json({message: 'error'})
+//     else {
+//       res.json({
+//         message: 'success',
+//         result: result
+//       })
+//     }
+//   })
+// })

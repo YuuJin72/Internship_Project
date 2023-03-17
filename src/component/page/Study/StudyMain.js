@@ -7,7 +7,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box, TextField, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -19,18 +18,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { searchState } from '../../../store/search'
 
 
-const theme = createTheme({
-  palette: {
-    green: {
-      main: '#51cf66',
-      contrastText: '#fff',
-    },
-    darkgreen: {
-      main: '#2f9e44',
-      contrastText: '#fff',
-    },
-  },
-});
 
 const StudyMain = () => {
 
@@ -71,9 +58,8 @@ const StudyMain = () => {
     const cards = [1, 2, 3, 4, 5, 6]
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
           <CssBaseline />
-          <main>
             <Box
               sx={{
                 bgcolor: 'background.paper',
@@ -95,7 +81,7 @@ const StudyMain = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={10}>
                     <TextField
-                      color='green'
+                      
                       size="small"
                       fullWidth
                       id="search"
@@ -108,7 +94,7 @@ const StudyMain = () => {
                   <Grid item xs={2}>
                     <Button
                       variant='contained'
-                      color='darkgreen'
+                      
                       sx={{
                         ml: '1rem'
                       }}
@@ -167,14 +153,14 @@ const StudyMain = () => {
               >
               <Button
               variant='contained'
-              color='darkgreen'
+              
               sx={{
                 ml: '1rem'
               }}
               onClick={handleStudyList}>전체 스터디 보기</Button>
               <Button
               variant='contained'
-              color='darkgreen'
+              
               sx={{
                 ml: '1rem'
               }}
@@ -182,9 +168,7 @@ const StudyMain = () => {
             </Typography>
             
             </Container>
-           
-          </main>
-        </ThemeProvider>
+          </>
       );
 }
 

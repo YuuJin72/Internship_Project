@@ -1,0 +1,7 @@
+.sidebar {
+    background-color: antiquewhite;
+}
+
+.sidebar :hover {
+    background-color: blue;
+}

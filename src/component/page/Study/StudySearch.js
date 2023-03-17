@@ -1,6 +1,4 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
 import { Box, Typography, Container, Grid, TextField, Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -22,18 +20,22 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux'
 import { searchState } from '../../../store/search'
 import { Modal } from '../../modal/Modal';
+import '../../../App.css'
 
 const theme = createTheme({
     palette: {
-      green: {
+      blue: {
         main: '#51cf66',
         contrastText: '#fff',
       },
-      darkgreen: {
+      darkblue: {
         main: '#2f9e44',
         contrastText: '#fff',
       },
     },
+    typograpy:{
+      fontFamily: 'OAGothic-Medium'
+    }
   });
 
 const { Success, Warning, Failure } = Modal()
@@ -101,8 +103,8 @@ function TablePaginationActions(props) {
   };
  
   export default function StudySearch() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rows, setRows] = useState([])
     const navigate = useNavigate()
     const searchReducer = useSelector((state) => state.search.value)
@@ -177,7 +179,7 @@ function TablePaginationActions(props) {
                 <Grid container spacing={2}>
                   <Grid item xs={10}>
                     <TextField
-                      color='green'
+                      color='blue'
                       size="small"
                       fullWidth
                       id="search"
@@ -190,7 +192,7 @@ function TablePaginationActions(props) {
                   <Grid item xs={2}>
                     <Button
                       variant='contained'
-                      color='darkgreen'
+                      color='darkblue'
                       sx={{
                         ml: '1rem'
                       }}

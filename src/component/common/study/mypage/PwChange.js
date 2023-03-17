@@ -58,18 +58,17 @@ const PwChange = () => {
 
     return(
         <>
-            <Box component="form" noValidate onSubmit={handleSubmit}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ml: 3}}>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{mt: 20}}>
                         <Typography>
-                            비밀번호를 한번 더 입력해주세요
+                            새 비밀번호를 입력해주세요.
                         </Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{mt: 3}}> 
                         <TextField
                         size="small"
                         required
-                        fullWidth
                         id="password"
                         label="비밀번호"
                         type="password"
@@ -78,13 +77,13 @@ const PwChange = () => {
                         onChange={handlePassword}
                         error= {passwordValid}
                         helperText={passwordErrorMessage}
+                        sx={{width: '25rem'}}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{mt: 2}}>
                         <TextField
                         size="small"
                         required
-                        fullWidth
                         id="password2"
                         value= {password2}
                         label="비밀번호 확인"
@@ -94,9 +93,10 @@ const PwChange = () => {
                         name="password2"
                         error={pwState}
                         helperText={passwordErrorMessage2}
+                        sx={{width: '25rem'}}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{mt: 20}}>
                         <Button variant='contained' type='submit'>
                             확인
                         </Button>

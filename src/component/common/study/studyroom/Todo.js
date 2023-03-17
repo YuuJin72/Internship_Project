@@ -1,9 +1,8 @@
 import React from 'react'
 import { Grid, Typography, Container, Paper } from '@mui/material'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCalendar from '../../MyCalendar'
 import TodaysWork from './TodaysWork';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import TodoIndivMember from './TodoIndivMember';
 import TodoAllMember from './TodoAllMember';
 import axios from 'axios'
@@ -20,19 +19,6 @@ const Todo = () => {
         return year + '-' + month + '-' + day
     }
     let today = getFormatDate(new Date())
-
-    const theme = createTheme({
-        palette: {
-          green: {
-            main: '#51cf66',
-            contrastText: '#fff',
-          },
-          darkgreen: {
-            main: '#2f9e44',
-            contrastText: '#fff',
-          },
-        },
-    });
 
     const params = useParams()
     const [ scheduleList, setScheduleList ] = useState('')
@@ -52,56 +38,54 @@ const Todo = () => {
     console.log()
 
     return(
-        <ThemeProvider theme={theme}>
-            <Container
-                maxWidth='lg' 
+        <Container
+            maxWidth='lg' 
+            sx={{
+            mt: 5,
+            mb: 5,
+            }}
+        >
+        
+            <Paper elevation={3} sx={{
+                mr: 2,
+                p: 2,
+                height: '100%',
+                width: '100%',
+            }}>
+                <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
+                    <Grid item xs={6}>
+                        <MyCalendar/>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TodoAllMember getScheduleList={getScheduleList} scheduleList={scheduleList}/>
+                    </Grid>
+                </Grid>
+            </Paper>
+            <Paper
+                elevation={3}
                 sx={{
-                mt: 5,
-                mb: 5,
-                }}
-            >
-            
-                <Paper elevation={3} sx={{
-                    mr: 2,
-                    p: 2,
-                    height: '100%',
-                    width: '100%',
-                }}>
-                    <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
-                        <Grid item xs={6}>
-                            <MyCalendar/>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TodoAllMember getScheduleList={getScheduleList} scheduleList={scheduleList}/>
-                        </Grid>
+                mt: 2,
+                mr: 2,
+                p: 2,
+                height: '100%',
+                width: '100%',
+            }}>
+                <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
+                    <Grid item xs={6}>
+                        <Typography>
+                            Today : {today}
+                        </Typography>
+                        <p/>
+                        <Typography>
+                            <TodaysWork/>
+                        </Typography>       
                     </Grid>
-                </Paper>
-                <Paper
-                    elevation={3}
-                    sx={{
-                    mt: 2,
-                    mr: 2,
-                    p: 2,
-                    height: '100%',
-                    width: '100%',
-                }}>
-                    <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
-                        <Grid item xs={6}>
-                            <Typography>
-                                Today : {today}
-                            </Typography>
-                            <p/>
-                            <Typography>
-                                <TodaysWork/>
-                            </Typography>       
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TodoIndivMember />
-                        </Grid>
+                    <Grid item xs={6}>
+                        <TodoIndivMember />
                     </Grid>
-                </Paper>
-            </Container>
-        </ThemeProvider>
+                </Grid>
+            </Paper>
+        </Container>
     )
 }
 

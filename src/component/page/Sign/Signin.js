@@ -9,26 +9,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Modal } from '../../modal/Modal';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { loginState } from '../../../store/user';
-
-const theme = createTheme({
-    palette: {
-      green: {
-        main: '#51cf66',
-        contrastText: '#fff',
-      },
-      darkgreen: {
-        main: '#2f9e44',
-        contrastText: '#fff',
-      },
-    },
-  });
 
 const Signin = () => {
   const { Failure } = Modal();
@@ -76,69 +62,64 @@ const Signin = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'green.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+    <Container component="main" maxWidth="xs" sx={{height: '50rem'}}>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ mt: 3, bgcolor: 'blue.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5" sx={{ mt: 2 }} >
+          로그인
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
+          <TextField
+            color='blue'
+            margin="normal"
+            required
+            fullWidth
+            id="id"
+            label="ID"
+            name="id"
+            autoFocus
+          />
+          <TextField
+            color='blue'
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+          />
+          <Button
+            color='blue'
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 7, mb: 2 }}
+          >
             로그인
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              color='green'
-              margin="normal"
-              required
-              fullWidth
-              id="id"
-              label="ID"
-              name="id"
-              autoFocus
-            />
-            <TextField
-              color='green'
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-            />
-            <Button
-              color='green'
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              로그인
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link variant="body2">
-                  비밀번호 찾기
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link onClick={onClickSignup} variant="body2" curser='pointer'>
-                  {"회원이 아니신가요?"}
-                </Link>
-              </Grid>
+          </Button>
+          <Grid container>
+            <Grid item xs>
             </Grid>
-          </Box>
+            <Grid item sx={{ mt: 1 }}>
+              <Link onClick={onClickSignup} variant="body1" underline="none" style={{cursor: 'pointer', color: '#777777'}}>
+                {"회원이 아니신가요?"}
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 }
 

@@ -2,7 +2,6 @@ import { Container, Typography, TextField, Button, Grid, Box } from "@mui/materi
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -16,23 +15,6 @@ const Settings = () => {
     // 디자인
     const { Success, Failure } = Modal()
     const params = useParams()
-    const theme = createTheme({
-        palette: {
-          green: {
-            main: '#51cf66',
-            contrastText: '#fff',
-          },
-          darkgreen: {
-            main: '#2f9e44',
-            contrastText: '#fff',
-          },
-          red: {
-            main: '#f03e3e',
-            contrastText: '#fff',
-          },
-        },
-    });
-
 
     // 스터디룸 상태 관리
     const [post, setPost] = useState({
@@ -130,7 +112,6 @@ const Settings = () => {
     }
 
     return(
-        <ThemeProvider theme={theme}>
             <Container
                 component='form'
                 onSubmit={handleSubmit}
@@ -184,7 +165,7 @@ const Settings = () => {
                                         {el.id}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" color="green" sx={{ml: 2}}>수락</Button>}
+                                        {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" color="blue" sx={{ml: 2}}>수락</Button>}
                                         {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>거절</Button>}
                                         {el.confirmed === 1 && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>추방</Button>}
                                     </Grid>
@@ -207,7 +188,7 @@ const Settings = () => {
                                         {el.id}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" color="green" sx={{ml: 2}}>수락</Button>}
+                                        {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" color="blue" sx={{ml: 2}}>수락</Button>}
                                         {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>거절</Button>}
                                         {el.confirmed === 1 && el.hostid !== el.id && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>추방</Button>}
                                         {el.confirmed === 1 && el.hostid === el.id && <Button variant='contained' disabled size="small" color="red" sx={{ml: 2}}>방장</Button>}
@@ -217,9 +198,8 @@ const Settings = () => {
                         </Box>
                     </Grid>
                 </Grid>
-                <Button variant='contained' type="submit" color="green" sx={{mt: 2, ml: 2}}>저장</Button>
+                <Button variant='contained' type="submit" color="blue" sx={{mt: 2, ml: 2}}>저장</Button>
             </Container>
-        </ThemeProvider>
     )
 }
 

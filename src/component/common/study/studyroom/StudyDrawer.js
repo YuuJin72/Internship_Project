@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { studyNavState } from '../../../../store/studyNav';
 
@@ -30,29 +29,15 @@ export default function NavTabs() {
     setValue(newValue);
   };
 
-  const theme = createTheme({
-    palette: {
-      green: {
-        main: '#51cf66',
-        contrastText: '#fff',
-      },
-      darkgreen: {
-        main: '#2f9e44',
-        contrastText: '#fff',
-      },
-    },
-  });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ width: '100%' }}>
-        <Tabs value={value} onChange={handleChange} centered TabIndicatorProps={{style: {background:'green'}}}>
-          <LinkTab label="Home" id='1'/>
-          <LinkTab label="Todo" id='2'/>
-          <LinkTab label="Board"  id='3'/>
-          <LinkTab label="Settings" id='4'/>
-        </Tabs>
-      </Box>
-    </ThemeProvider>
+    <Box sx={{ width: '100%' }}>
+      <Tabs value={value} onChange={handleChange} centered TabIndicatorProps={{style: {background:'blue'}}}>
+        <LinkTab label="Home" id='1'/>
+        <LinkTab label="Todo" id='2'/>
+        <LinkTab label="Board"  id='3'/>
+        <LinkTab label="Settings" id='4'/>
+      </Tabs>
+    </Box>
   );
 }

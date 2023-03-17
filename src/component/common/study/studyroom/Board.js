@@ -1,6 +1,5 @@
 import { Button, Container, Typography, Grid, TextField, Box } from "@mui/material"
 import { useState, useEffect } from "react"
-import { ThemeProvider } from '@mui/material/styles';
 import { useParams, useNavigate } from "react-router";
 import theme from '../../stylecolor/style'
 import axios from "axios";
@@ -135,7 +134,6 @@ const Board = () => {
     }
 
     return(
-        <ThemeProvider theme={theme}>
             <Container
                 maxWidth='md' 
                 sx={{
@@ -199,7 +197,6 @@ const Board = () => {
                     </Grid>
                 </Box>))}
             </Container>
-        </ThemeProvider>
     )
 }
 

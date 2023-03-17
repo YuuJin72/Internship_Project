@@ -2,11 +2,11 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
     palette: {
-      green: {
+      blue: {
         main: '#51cf66',
         contrastText: '#fff',
       },
-      darkgreen: {
+      darkblue: {
         main: '#2f9e44',
         contrastText: '#fff',
       },
