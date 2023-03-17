@@ -25,17 +25,17 @@ const PwCheck = ({isCorrect, getIsCorrect}) => {
 
     return(
         <>
-            <Box component="form" noValidate onSubmit={handleSubmit}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ml: 3}}>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{mt: 20}}>
                         <Typography>
                             비밀번호를 한번 더 입력해주세요
                         </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField label='비밀번호' name='password' type='password'/>
+                    <Grid item xs={12} sx={{mt: 3}}>
+                        <TextField label='비밀번호' name='password' type='password' required sx={{width: '25rem'}}/>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{mt: 15}}>
                         <Button variant='contained' type='submit'>
                             확인
                         </Button>

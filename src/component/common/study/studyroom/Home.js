@@ -1,26 +1,12 @@
 import React from 'react'
 import { Grid, Typography, Container, Paper, Box } from '@mui/material'
 import MyCalendar from '../../MyCalendar'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router'
 
 
 const Home = () => {
-
-    const theme = createTheme({
-        palette: {
-          green: {
-            main: '#51cf66',
-            contrastText: '#fff',
-          },
-          darkgreen: {
-            main: '#2f9e44',
-            contrastText: '#fff',
-          },
-        },
-      });
     
     const [member, setMember] = useState([])
     const [ scheduleList, setScheduleList ] = useState('')
@@ -74,7 +60,6 @@ const Home = () => {
     }, [])
 
     return(
-        <ThemeProvider theme={theme}>
         <Container
             maxWidth='lg' 
             sx={{
@@ -158,7 +143,7 @@ const Home = () => {
                             멤버
                         </Typography>
                         <Box>
-                            <Grid container sx={{ mt: 4, bgcolor: 'green' }} textAlign='center' borderRadius={3} 
+                            <Grid container sx={{ mt: 4 }} textAlign='center' borderRadius={3} 
                                   height='2rem' 
                                   alignItems='center'>
                                 <Grid item xs={6}>
@@ -190,7 +175,6 @@ const Home = () => {
                 </Grid>
             </Grid>
         </Container>
-        </ThemeProvider>
     )
 }
 

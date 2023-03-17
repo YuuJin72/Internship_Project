@@ -12,26 +12,14 @@ import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { Modal } from '../modal/Modal';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { loginState } from '../../store/user';
+import logo from '../../assets/images/Logo.png'
 
 // 네비게이션 바
-const theme = createTheme({
-  palette: {
-    green: {
-      main: '#51cf66',
-      contrastText: '#fff',
-    },
-    darkgreen: {
-      main: '#2f9e44',
-      contrastText: '#fff',
-    },
-  },
-});
 
 const Navbar2 = () => {
   const user = useSelector((state) => state.user.value)
@@ -101,26 +89,28 @@ const Navbar2 = () => {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {!user && <MenuItem onClick={handleLogIn}>로그인</MenuItem>}
-      {!user && <MenuItem onClick={handleSignup}>회원가입</MenuItem>}
-      {user && <MenuItem onClick={handleLogout}>로그아웃</MenuItem>}
-      {user && <MenuItem onClick={handleMyPage}>내 정보 보기</MenuItem>}
-    </Menu>
+    <>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        {!user && <MenuItem onClick={handleLogIn}>로그인</MenuItem>}
+        {!user && <MenuItem onClick={handleSignup}>회원가입</MenuItem>}
+        {user && <MenuItem onClick={handleLogout}>로그아웃</MenuItem>}
+        {user && <MenuItem onClick={handleMyPage}>내 정보 보기</MenuItem>}
+      </Menu>
+    </>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -208,10 +198,10 @@ const Navbar2 = () => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color='darkgreen'>
+        <AppBar position="static" color='darkblue'>
           <Toolbar>
+            <img src= {logo} alt='logo' style={{height: '5rem', width: '8.5rem'}}/> 
             <Typography
               variant="h6"
               noWrap
@@ -264,7 +254,6 @@ const Navbar2 = () => {
         {renderMobileMenu}
         {renderMenu}
       </Box>
-    </ThemeProvider>
   );
 }
 

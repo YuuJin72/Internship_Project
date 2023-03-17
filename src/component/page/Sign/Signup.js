@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { Modal } from '../../modal/Modal'
 import axios from 'axios';
@@ -22,18 +21,6 @@ import { chkEmail } from '../../../store/signup/signemail'
 import { chkNickname } from '../../../store/signup/signnickname'
 import { useSelector, useDispatch } from 'react-redux'
 
-const theme = createTheme({
-    palette: {
-      green: {
-        main: '#51cf66',
-        contrastText: '#fff',
-      },
-      darkgreen: {
-        main: '#2f9e44',
-        contrastText: '#fff',
-      },
-    },
-  });
 
 const SignUp = () => {
   const { Success, Failure, Warning } = Modal();
@@ -225,7 +212,6 @@ const SignUp = () => {
   // ============================ 이미지 업로드 부분 끝======================================= //
   return (
     <Container>
-      <ThemeProvider theme={theme}>
         <Container component="main" maxWidth='md'>
           <CssBaseline />
           <Box
@@ -236,43 +222,17 @@ const SignUp = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'darkgreen.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'darkblue.main' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" mt='1rem'>
               회원가입
             </Typography>
- {/* // ============================ 이미지 업로드 부분 시작======================================= // */}
-    <form action="/upload" method="post" encType="multipart/form-data">
-      <input
-        accept="image/*"
-        type="file"
-        id="image"
-        name='image'
-        style={{ display: "none" }}
-        onChange={(e) => 
-          setSelectedImage(e.target.files[0])}
-      />
-      <label htmlFor="image">
-        <Button variant="contained" color="primary" type='submit' component="span">
-          Upload Image
-        </Button>
-      </label>
-      {imageUrl && selectedImage && (
-        <Box mt={2} textAlign="center">
-          <div>Image Preview:</div>
-          <img src={imageUrl} alt={selectedImage.name} height="100px" />
-        </Box>
-      )}
-    </form>
-
-    {/* // ============================ 이미지 업로드 부분 끝======================================= // */}
-
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2} item xs={12}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    color='green'
+                    color='blue'
                     size="small"
                     name="id"
                     onChange = {handleChangeId}
@@ -288,7 +248,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Button
-                  color='green'
+                  color='blue'
                   variant="contained"
                   onClick={onClickIdCheck}>
                       중복 확인
@@ -300,7 +260,7 @@ const SignUp = () => {
                 <Grid item xs={12} sm={6} />
                 <Grid item xs={12} sm={6}>
                     <TextField
-                      color='green'
+                      color='blue'
                       size="small"
                       required
                       fullWidth
@@ -319,7 +279,7 @@ const SignUp = () => {
                 <Grid item xs={12} mt='1rem'/>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    color='green'
+                    color='blue'
                     size="small"
                     required
                     fullWidth
@@ -334,7 +294,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Button
-                  color='green'
+                  color='blue'
                   variant="contained"
                   onClick={onClickemailAuth}>
                       인증번호 받기
@@ -342,7 +302,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    color='green'
+                    color='blue'
                     size="small"
                     required
                     fullWidth
@@ -354,7 +314,7 @@ const SignUp = () => {
                 <Grid item xs={12} mt='1rem'/>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    color='green'
+                    color='blue'
                     size="small"
                     required
                     fullWidth
@@ -374,16 +334,16 @@ const SignUp = () => {
                 <Grid item xs={12} sm={6}>
                   <Button
                   component='label'
-                  color='green'
+                  color='blue'
                   variant="contained">
                       프로필 업로드
                       <input hidden accept="image/*" multiple type="file" />
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={4.5} />
-              <Grid item xs={12} sm={6}>
+               <Grid item xs={12} sm={6}>
                   <Button
-                  color='green'
+                  color='blue'
                   type="submit"
                   variant="contained"
                   sx={{ 
@@ -394,18 +354,14 @@ const SignUp = () => {
                   >
                   회원가입
                   </Button>
+                </Grid>
               </Grid>
-              </Grid>
-              
-              
             </Box>
           </Box>
           <div>
           
           </div>
         </Container>
-        
-      </ThemeProvider>
     </Container>
   );
 }

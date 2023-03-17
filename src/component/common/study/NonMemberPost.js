@@ -2,7 +2,7 @@ import './NonMemberPost.css'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, ThemeProvider, Typography, Button, createTheme } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { Modal } from '../../modal/Modal';
 import { memberState } from '../../../store/member';
@@ -16,23 +16,6 @@ const NonMemberPost = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { Warning, Success, Failure } = Modal()
-
-    const theme = createTheme({
-        palette: {
-          green: {
-            main: '#51cf66',
-            contrastText: '#fff',
-          },
-          darkgreen: {
-            main: '#2f9e44',
-            contrastText: '#fff',
-          },
-          red: {
-            main: '#f03e3e',
-            contrastText: '#fff',
-          },
-        },
-      });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -67,7 +50,6 @@ const NonMemberPost = (props) => {
 
     return(
         <div className='create-background-outer'>
-          <ThemeProvider theme={theme}>
           <Box component="form" noValidate onSubmit={handleSubmit}>
             <Typography
                   component="h3"
@@ -161,7 +143,7 @@ const NonMemberPost = (props) => {
                     {!member && <Button
                     variant='contained'
                     type='submit'
-                    color='darkgreen'
+                    color='darkblue'
                     sx={{
                         m: '1rem',
                       }}>가입 신청</Button>} 
@@ -175,7 +157,7 @@ const NonMemberPost = (props) => {
                     <Button
                     variant='contained'
                     onClick={handleCancel}
-                    color='darkgreen'
+                    color='darkblue'
                     sx={{
                         m: '1rem',
                       }}>목록</Button>
@@ -183,7 +165,6 @@ const NonMemberPost = (props) => {
                 </div>
             </div>
           </Box>
-            </ThemeProvider>
         </div>
     )
 }

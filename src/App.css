@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'OAGothic-Medium';
+    font-weight: 500;
+    src: url('./assets/font/The Jamsil 3 Regular.ttf');
+}
+
+* {
+    font-family: 'OAGothic-Medium';
+}

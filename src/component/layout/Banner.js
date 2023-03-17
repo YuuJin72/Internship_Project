@@ -1,11 +1,14 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './Banner.css'
+import banner1 from "../../assets/images/banner01.jpg";
+import banner2 from "../../assets/images/banner02.jpg";
+import banner3 from "../../assets/images/banner03.jpg";
 import Slider from "react-slick";
 
 const Banner = () => {
     const settings = {
-        dots: true,
+        dots: false,
         infinite: true,
         autoplay: true,
         autoplaySpeed: 5000,
@@ -16,20 +19,17 @@ const Banner = () => {
 
     return (
         <div className='banner'>
+            <Slider {...settings}>
             <div>
-                <h2> Single Item</h2>
-                <Slider {...settings}>
-                <div>
-                    <h3>1</h3>
-                </div>
-                <div>
-                    <h3>2</h3>
-                </div>
-                <div>
-                    <h3>3</h3>
-                </div>
-                </Slider>
+                <img src={banner1} alt='banner1'/>
             </div>
+            <div>
+                <img src={banner2} alt='banner2'/>
+            </div>
+            <div>
+                <img src={banner3} alt='banner3'/>
+            </div>
+            </Slider>
         </div>
     )
 }

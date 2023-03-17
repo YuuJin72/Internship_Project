@@ -1,5 +1,10 @@
 .main{
-    margin-top: 3rem;
+    margin: auto;
     text-align: center;
-    height: 50rem;
+    background-image: url('../../../assets/images/mainimg.jpg');
+    width: 100vw;
+    height: 230vh;
+    background-position: 'center';
+    background-repeat: 'no-repeat';
+    background-size: 100vw 230vh;
 }

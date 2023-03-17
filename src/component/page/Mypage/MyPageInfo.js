@@ -42,31 +42,31 @@ const MyPageInfo = () => {
 
     return(
         <>
-            <Grid container textAlign='left' alignItems='center'>
-                <Grid item xs={12}>
-                    <Typography>
+            <Grid container textAlign='left' alignItems='center' sx={{ml: 3}}>
+                <Grid item xs={12} textAlign='center' sx={{mt: 10}}>
+                    <Typography variant="h4">
                         내 정보 페이지
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography>
+                    <Typography variant="h5" sx={{mt: 10}}>
                         내 아이디 : {info?.id}
                     </Typography>
                 </Grid>
-                <Grid item xs={12}>
-                    <Typography>
+                <Grid item xs={12} >
+                    <Typography variant="h5" sx={{mt: 4}}>
                         내 이메일 : {info?.email}
                     </Typography>
                 </Grid>
-                <Grid item xs={6}>
-                    <Typography>
+                <Grid item xs={2} sx={{mt: 4}}>
+                    <Typography variant="h5">
                         닉네임 : 
                     </Typography>
                 </Grid>
-                <Grid item xs={6}>
-                    <TextField value={nickname} onChange={handleOnchange}/>
+                <Grid item xs={10} sx={{mt: 4}}>
+                    <TextField value={nickname} size='small' onChange={handleOnchange}/>
                 </Grid>
-                <Grid item xs={12} textAlign='center'>
+                <Grid item xs={12} textAlign='center' sx={{mt: 15}}>
                     <Button variant="contained" onClick={handleSubmit}> 수정 </Button>
                 </Grid>
             </Grid>
