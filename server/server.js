@@ -86,7 +86,7 @@ passport.use(new localStrategy({
 ));
 
 app.post('/signin', passport.authenticate('local', { failureRedirect: '/',}), (req, res) => {
-  res.json({ message: 'success' })
+  res.redirect('/success')
 })
 
 passport.serializeUser((user, done) => {
@@ -108,6 +108,17 @@ passport.deserializeUser(function(user, done) {
 app.get('/', function (req, res) {
   res.json({ message: 'fail' })
 });
+
+app.get('/success', function (req, res) {
+  const sql = `SELECT * FROM user
+  WHERE id = ?`
+  con.query(sql, [req.user[0].id], function (err, result){
+    res.json({ 
+      message: 'success',
+      nickname: result[0].nickname
+     })
+  });
+})
 
 app.get('/islogin', (req, res) => {
   console.log('checking login status...')
@@ -425,6 +436,7 @@ app.post('/study/requestmember/:id', (req, res) => {
   join studylist sl
   on sl._num = sm._num
   where sl._num = ?
+  and sm.confirmed = 1
   group by limit_member`
   con.query(chkSql, [Number(req.params.id)], (err, result) => {
     if(result[0].total >= result[0].limit_member){
@@ -599,14 +611,17 @@ and (todotype = 0 or todotype is null)`
 // ================================================================== //
 // 스터디룸 todo - 전체스케쥴
 app.post('/study/:id/todoall', (req, res) => {
-  const sql = `select * from studysubobject
-  where _num = ?
-  and todotype = 1`
+  const sql = `select ss.title, ss.start, hostid from studysubobject ss
+join studylist sl
+on sl._num = ss._num
+where ss._num = ?
+and todotype = 1`
   con.query(sql, [Number(req.params.id)], (err, result) => {
     if(err) res.json({message : 'err'})
     else res.json({
       message : 'success',
-      result: result
+      result: result,
+      loginid: req.user[0].id
     })
   })
 })
@@ -737,7 +752,8 @@ app.post('/study/:id/settingsr', (req, res) => {
     if(err) throw err
     res.send({
       message: 'success',
-      result: result
+      result: result,
+      loginid: req.user[0].id
     })
   })
 })

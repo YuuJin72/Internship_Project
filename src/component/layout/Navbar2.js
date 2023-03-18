@@ -17,12 +17,14 @@ import { Modal } from '../modal/Modal';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { loginState } from '../../store/user';
+import { nicknameState } from '../../store/getnickname'
 import logo from '../../assets/images/Logo.png'
 
 // 네비게이션 바
 
 const Navbar2 = () => {
   const user = useSelector((state) => state.user.value)
+  const nickname = useSelector((state) => state.getnickname.value)
 
   const dispatch = useDispatch()
 
@@ -60,6 +62,7 @@ const Navbar2 = () => {
       handleMenuClose()
       Success('로그아웃 완료')
       dispatch(loginState(false))
+      dispatch(nicknameState(''))
       navigate('/')
     })
   }
@@ -212,7 +215,12 @@ const Navbar2 = () => {
             </Typography>
 
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+              {user ? 
+              <Typography sx={{mr: 3}}>
+                {nickname} 님, 환영합니다! 
+              </Typography>
+              : '로그인하여 서비스를 즐겨보세요!'}
               <IconButton size="large" 
               color="inherit" 
               onClick={handleHome}>

@@ -19,7 +19,7 @@ import memberReducer from './member'
 import searchReducer from './search'
 import studyRoomHostReducer from './studyRoomHost'
 import studyNavReducer from './studyNav'
-import scheduleReducer from './schedule'
+import getNicknameReducer from './getnickname'
 
 const persistConfig = {
   key: 'root',
@@ -37,7 +37,7 @@ const rootReducer = combineReducers({
   search: searchReducer,
   studyroomhost : studyRoomHostReducer,
   studynavnumber : studyNavReducer,
-  schedule : scheduleReducer
+  getnickname : getNicknameReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

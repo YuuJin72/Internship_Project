@@ -61,7 +61,7 @@ const PwChange = () => {
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ml: 3}}>
                 <Grid container>
                     <Grid item xs={12} sx={{mt: 20}}>
-                        <Typography>
+                        <Typography  variant="h6">
                             새 비밀번호를 입력해주세요.
                         </Typography>
                     </Grid>

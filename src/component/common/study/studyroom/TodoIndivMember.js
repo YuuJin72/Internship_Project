@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { Grid } from "@mui/material"
+import { Grid, Typography } from "@mui/material"
 import axios from "axios"
 
 const TodoIndivMember = () => {
@@ -27,12 +27,42 @@ const TodoIndivMember = () => {
         fetchPost()
     }, [todoMember])
 
+    const finishSx = {
+        backgroundColor: 'green.main',
+        borderRadius: 3,
+        p: 0.5, 
+        ml: 11,
+        mr: 11,
+    }
+
+    const nonfinishSx = {
+        backgroundColor: 'lightgray.main',
+        borderRadius: 3,
+        p: 0.5, 
+        ml: 11,
+        mr: 11,
+    }
+
+    const textSx = {
+        p: 2, 
+        mb: 4,
+        ml: 18,
+        mr: 18,
+        backgroundColor: 'blue.dark',
+        borderRadius: 5,
+        boxShadow: 5,
+        color: 'white.main'
+      }
+
     return(
         <>
+            <Typography variant="h4" sx={textSx}>
+                달성 여부
+            </Typography>
             {todoMember && todoMember.map((el) => ( 
                 <Grid 
                     key={el?.id}
-                    container sx={{ mt: 1 }} 
+                    container sx={{ mt: 1.5 }} 
                     textAlign='center' 
                     borderRadius={3} 
                     height='2rem' 
@@ -41,7 +71,13 @@ const TodoIndivMember = () => {
                     {el?.mem}
                 </Grid>
                 <Grid item xs={6}>
-                    {el?.isfinished === 1 ? '완료' : '미완료'}
+                    {el?.isfinished === 1 
+                    ? <Typography sx={finishSx}>
+                        완료
+                      </Typography>
+                    : <Typography sx={nonfinishSx}>
+                        미완료
+                      </Typography>}
                 </Grid>
             </Grid>
             ))}

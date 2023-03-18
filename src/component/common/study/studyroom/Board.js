@@ -1,4 +1,4 @@
-import { Button, Container, Typography, Grid, TextField, Box } from "@mui/material"
+import { Button, Container, Typography, Grid, TextField, Box, Paper } from "@mui/material"
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router";
 import theme from '../../stylecolor/style'
@@ -133,17 +133,34 @@ const Board = () => {
         setBoardEdit('')
     }
 
+    const textSx = {
+        p: 2, 
+        mb: 4,
+        ml: 50,
+        mr: 50,
+        backgroundColor: 'blue.dark',
+        borderRadius: 5,
+        boxShadow: 5,
+        color: 'white.main'
+      }
+
     return(
-            <Container
-                maxWidth='md' 
+        <Container maxWidth='lg'
+        sx={{
+        mt: 4,
+        pb: 4,
+        }}>
+            <Paper
                 sx={{
-                mt: 5,
-                mb: 5,
+                mt: 4,
+                pt: 5,
+                pb: 4,
+                backgroundColor: 'white.main'
                 }}
             >
                 <Grid container sx={{p: 2, m: 1}} justifyContent='flex-end' textAlign='center'>
                     <Grid item xs={12} >
-                        <Typography>
+                        <Typography  variant="h4" sx={textSx}>
                             게시판
                         </Typography>
                     </Grid>
@@ -152,12 +169,12 @@ const Board = () => {
                     </Grid>
                 </Grid>
                 {boardState && 
-                <Box>
-                    <Grid component="form" noValidate onSubmit={handleSubmit} container textAlign='center' alignItems='center' sx={{mb: 10}}>
-                        <Grid item xs={10}>
+                <Box boxShadow={3} borderRadius={4} sx={{ml: 3, mr: 3, mb: 5, p: 2}}>
+                    <Grid component="form" noValidate onSubmit={handleSubmit} container textAlign='center' alignItems='center' sx={{p: 2}}>
+                        <Grid item xs={10} sx={{p: 1}}>
                             <TextField fullWidth value={board} onChange={handleBoardChange}/>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={2} sx={{p: 1}}>
                             <Button variant='contained' type='submit'>등록</Button><p/>
                             <Button variant='contained' onClick={handleCancel}>취소</Button>
                         </Grid>
@@ -165,7 +182,7 @@ const Board = () => {
                 </Box>}
 
                 {boardList && boardList.map((el) => (
-                <Box border={1} key={el?._id}>
+                <Box boxShadow={3} borderRadius={4} key={el?._id} sx={{ml: 3, mr: 3, mb: 1, p: 1}}>
                     <Grid container textAlign='center' alignItems='center' sx={{mt: 1}}>
                         <Grid item xs={4}>
                             <Typography textAlign='left' sx={{pl: 2}}>
@@ -196,7 +213,8 @@ const Board = () => {
                         </Grid>
                     </Grid>
                 </Box>))}
-            </Container>
+            </Paper>
+        </Container>
     )
 }
 

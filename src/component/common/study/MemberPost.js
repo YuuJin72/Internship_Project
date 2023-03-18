@@ -17,13 +17,13 @@ const MemberPost = () => {
     },[])
     
     return(
-        <>
+        <div className="bgcolor">
             <StudyDrawer/>
             {navnumber === '1' ? <Home/> :
             navnumber === '2' ? <Todo/> :
             navnumber === '3' ? <Board/> :
             <Settings/>}
-        </>
+        </div>
     )
 }
 

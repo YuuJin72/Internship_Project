@@ -91,31 +91,45 @@ let today = getFormatDate(new Date())
     })
   }
 
+  const textSx = {
+    p: 2, 
+    mb: 5,
+    ml: 18,
+    mr: 18,
+    backgroundColor: 'blue.dark',
+    borderRadius: 5,
+    boxShadow: 5,
+    color: 'white.main'
+  }
+
   return (
     <>
-    <Grid container alignItems='center'>
-      <Grid item xs={10}>
-        <TextField placeholder='할 일을 입력하세요' fullWidth value={todo} onChange={handleChangeTodo} />
+        <Typography variant="h4" sx={textSx}>
+          개인 스케쥴
+        </Typography>
+      <Grid container alignItems='center'>
+        <Grid item xs={10}>
+          <TextField placeholder='할 일을 입력하세요' fullWidth value={todo} onChange={handleChangeTodo} />
+        </Grid>
+        <Grid item xs={2}>
+          <Button variant='contained' disabled={todoFinished} onClick={handleSubmitTodo}> + </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={2}>
-        <Button variant='contained' disabled={todoFinished} onClick={handleSubmitTodo}> + </Button>
+      {todoList && todoList.map((el) => (
+        <Box key={el._id} boxShadow={3} borderRadius={4} sx={{ml: 2, mr: 4, mb: 1, mt: 2, p: 1}}>
+          <Grid key={el._id} container alignItems='center'>
+                <Grid item xs={10}>
+                  <Typography> {el?.title} </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Button variant='contained' id={el._id} disabled={todoFinished} onClick={handleDeleteTodo} >삭제</Button>
+                </Grid>
+          </Grid>
+        </Box>
+      ))}
+      <Grid item xs={12}>
+          <Button variant='contained' onClick={handleFinishTodo} disabled={todoFinished} sx={{mt: 25}}> 오늘의 할 일 완료 </Button>
       </Grid>
-    </Grid>
-    {todoList && todoList.map((el) => (
-      <Grid key={el._id} container alignItems='center'>
-            <Grid item xs={10}>
-              <Typography> {el?.title} </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Button variant='contained' id={el._id} disabled={todoFinished} onClick={handleDeleteTodo} >삭제</Button>
-            </Grid>
-      </Grid>
-    ))}
-    <Grid item xs={12}>
-        <Button variant='contained' onClick={handleFinishTodo} disabled={todoFinished}> 오늘의 할 일 완료 </Button>
-    </Grid>
-
-    
     </>
   );
 }

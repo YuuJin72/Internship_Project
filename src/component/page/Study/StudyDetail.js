@@ -53,13 +53,13 @@ const StudyDetail = () => {
 
     useEffect(() => {
         fetchPost();
-    }, [setLoading]);
+    }, []);
 
     return (
-        <>
-            {loading ? <Loading /> : 
+        <div className="bgcolor">
+            {   loading ? <Loading /> : 
             confirmed ? <MemberPost /> : <NonMemberPost prop={[post[0], limmem[0]]}/>}
-        </>
+        </div>
     )
     
     

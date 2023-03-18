@@ -31,6 +31,8 @@ function App() {
     palette: {
       blue: {
         main: '#1971c2',
+        light: '#a5d8ff',
+        dark: '#22365E',
         contrastText: '#fff',
       },
       darkblue: {
@@ -41,20 +43,17 @@ function App() {
         main: '#f03e3e',
         contrastText: '#fff',
       },
-      secondary: {
-        main: '#FFFFFF',
-        red: '#FF0000',
-        darkblue: '#22365E',
-        lightblue: '#a5d8ff',
-        contrastText: '#000',
+      lightgray: {
+        main: '#EBEBEB'
+      },
+      white: {
+        main: '#FFFFFF'
+      },
+      green: {
+        main: '#66FF33',
+        contrastText: '#000'
       }
     },
-    link: {
-      // "&.MuiButton-root:hover": {
-      //   color: "gray",
-      //   border: '1px'
-      // }
-    }
   })
 
   return (
