@@ -63,8 +63,8 @@ const Home = () => {
         <Container
             maxWidth='lg' 
             sx={{
-            mt: 5,
-            mb: 5,
+            mt: 4,
+            pb: 4,
             }}
         >
             <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center'>

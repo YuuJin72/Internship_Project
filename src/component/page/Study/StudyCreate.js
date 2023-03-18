@@ -23,7 +23,7 @@ const StudyCreate = () => {
         }
       })
     }
-    console.log('useEffect')
+
     isLogin()
   },[user])
   
@@ -72,93 +72,103 @@ const StudyCreate = () => {
     navigate('/study')
   }
 
+  const TextSx = {
+    p: 2, 
+    mb: 10,
+    ml: 18,
+    mr: 18,
+    backgroundColor: 'blue.dark',
+    borderRadius: 5,
+    boxShadow: 5,
+    color: 'white.main'
+  }
+
   return(
-    <Container maxWidth='lg' align='center'>
-      <Box component="form"  noValidate onSubmit={handleSubmit} maxWidth='sm'>
-        <Typography
-          component="h3"
-          variant="h3"
-          align="center"
-          color="text.primary"
-          gutterBottom
+    <div className='bgcolor'>
+      <Container maxWidth='lg' align='center' sx={{backgroundColor: 'white.main'}}>
+        <Box component="form" noValidate onSubmit={handleSubmit} maxWidth='sm' sx={{pt: 10}}>
+          <Typography
+            variant="h3"
+            sx={[TextSx]}
+          >
+            스터디 생성
+          </Typography>
+          <Typography variant="h4">
+            스터디 이름
+          </Typography>
+          <TextField 
+            size='small' 
+            fullWidth label="스터디 이름" 
+            name="name" 
+            value = {studyTitle}
+            onChange = {handleChangeTitle}
+            error = {studyTitleValid}
+            color="darkblue" 
+            helperText={titleErrorMessage}
+            focused 
+            margin="normal"
+            sx={{mb: 6}}/><p/>
+          <Typography  variant="h4">
+            태그
+          </Typography>
+          <TextField 
+            size='small' 
+            fullWidth 
+            label="태그" 
+            name="tag" 
+            color="darkblue" 
+            focused 
+            margin="normal"
+            sx={{mb: 6}}/><p/>
+          <Typography  variant="h4">
+            멤버 수 설정 : {memberNum}명
+          </Typography>
+          <Slider
+            aria-label="Temperature"
+            defaultValue={2}
+            value={memberNum}
+            onChange={handleChangeMember}
+            valueLabelDisplay="auto"
+            step={1}
+            min={2}
+            max={10}
+            sx={{mb: 6}}
+          />
+          <Typography  variant="h4">
+            스터디 소개
+          </Typography>
+          <TextField 
+            size='small' 
+            multiline rows={8} 
+            fullWidth 
+            label="설명" 
+            name="detail" 
+            color="darkblue" 
+            focused 
+            margin="normal"/><p/>
+          <Box
           sx={{
-            mt: '3rem',
-            mb: '3rem'
-          }}
-        >
-          스터디 생성
-        </Typography>
-        <Typography>
-          스터디 이름
-        </Typography>
-        <TextField 
-          size='small' 
-          fullWidth label="스터디 이름" 
-          name="name" 
-          value = {studyTitle}
-          onChange = {handleChangeTitle}
-          error = {studyTitleValid}
-          color="darkblue" 
-          helperText={titleErrorMessage}
-          focused 
-          margin="normal"/><p/>
-        <Typography>
-          태그
-        </Typography>
-        <TextField 
-          size='small' 
-          fullWidth 
-          label="태그" 
-          name="tag" 
-          color="darkblue" 
-          focused 
-          margin="normal"/><p/>
-        <Typography>
-          멤버 수 설정 : {memberNum}명
-        </Typography>
-        <Slider
-          aria-label="Temperature"
-          defaultValue={2}
-          value={memberNum}
-          onChange={handleChangeMember}
-          valueLabelDisplay="auto"
-          step={1}
-          min={2}
-          max={10}
-        />
-        <Typography>
-          스터디 소개
-        </Typography>
-        <TextField 
-          size='small' 
-          multiline rows={8} 
-          fullWidth 
-          label="설명" 
-          name="detail" 
-          color="darkblue" 
-          focused 
-          margin="normal"/><p/>
-        <Box
-        sx={{
-              mt: '10rem',
-            }}>
-          <Button
-          variant='contained'
-          type='submit'
-          color='darkblue'
-          sx={{
-              m: '1rem',
-            }}>스터디 등록</Button> 
-          <Button
-          variant='contained'
-          onClick={handleCancel}
-          color='darkblue'
-          sx={{
-              m: '1rem',
-            }}>취소</Button>
+                mt: '10rem',
+                pb: '3rem'
+              }}>
+            <Button
+            variant='contained'
+            type='submit'
+            color='darkblue'
+            sx={{
+                m: '1rem',
+              }}>스터디 등록</Button> 
+            <Button
+            variant='contained'
+            onClick={handleCancel}
+            color='darkblue'
+            sx={{
+                m: '1rem',
+              }}>취소</Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   )
 }
 

@@ -32,18 +32,28 @@ const MyPageStudy = () => {
         fetchPost()
     },[])
 
+    const textSx = {
+        p: 2, 
+        mb: 3,
+        ml: 30,
+        mr: 40,
+        backgroundColor: 'blue.dark',
+        borderRadius: 5,
+        boxShadow: 5,
+        color: 'white.main'
+      }
 
     return(
         <>
             <Grid container textAlign='center' spacing={3} justifyItems='center' sx={{ml: 3, mb: 20}}>
                 <Grid item xs={12} sx={{mt: 10}}>
-                    <Typography variant="h5">
+                    <Typography variant="h5" sx={textSx}>
                         내 스터디 
                     </Typography>
                 </Grid>
                 <Grid item xs={12} >
                 {mystudy && mystudy.map((el) => (
-                    el.confirmed === 1 && <Box key={el._num} id={el._num} borderRadius={10} boxShadow={5} backgroundColor='blue.main' color='secondary.main' onClick={handleOnClick} sx={{height: '5rem', mt: 1.5}}>
+                    el.confirmed === 1 && <Box key={el._num} id={el._num} borderRadius={5} boxShadow={5} backgroundColor='blue.main' color='white.main' onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, mr: 10}}>
                         <Grid container alignItems='center' sx={{height: '5rem'}}>
                             <Grid item xs={2}>
                                 <Typography id={el._num}>
@@ -57,7 +67,7 @@ const MyPageStudy = () => {
                             </Grid>
                             <Grid item xs={2}>
                                 <Typography id={el._num}>
-                                    {el?.hostid}
+                                    방장 : {el?.hostid}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -65,13 +75,13 @@ const MyPageStudy = () => {
                 ))}
                 </Grid>
                 <Grid item xs={12} sx={{mt: 10}}>
-                    <Typography variant="h5">
+                    <Typography variant="h5" sx={textSx}>
                         가입 대기중인 스터디
                     </Typography>
                 </Grid>
                 <Grid item xs={12} >
                 {mystudy && mystudy.map((el) => (
-                    el.confirmed === 0 && <Box key={el._num} id={el._num} borderRadius={10} boxShadow={5} backgroundColor='blue.main' color='secondary.main' onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, boxshadow: 10}}>
+                    el.confirmed === 0 && <Box key={el._num} id={el._num} borderRadius={5} boxShadow={5} backgroundColor='blue.main' color='white.main' onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, mr: 10}}>
                         <Grid container alignItems='center' sx={{height: '5rem'}}>
                             <Grid item xs={2} >
                                 <Typography id={el._num}>
@@ -85,7 +95,7 @@ const MyPageStudy = () => {
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography id={el._num}>
-                                    {el?.hostid}
+                                방장 : {el?.hostid}
                                 </Typography>
                             </Grid>
                         </Grid>

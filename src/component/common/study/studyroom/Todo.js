@@ -5,8 +5,6 @@ import TodaysWork from './TodaysWork';
 import { useState } from 'react'
 import TodoIndivMember from './TodoIndivMember';
 import TodoAllMember from './TodoAllMember';
-import axios from 'axios'
-import { useParams } from 'react-router-dom';
 
 const Todo = () => {
 
@@ -20,32 +18,20 @@ const Todo = () => {
     }
     let today = getFormatDate(new Date())
 
-    const params = useParams()
     const [ scheduleList, setScheduleList ] = useState('')
-    const [ mainSchedule, setMainSchedule ] = useState('')
 
     const getScheduleList = (scheduleList) => {
         setScheduleList(scheduleList)
     }
-
-    const fetchSchedule = () => {
-        axios.get(`http://localhost:8080/study/${params.id}/schedule`)
-        .then((res) => {
-            setMainSchedule(res.data.result)
-        })
-    }
-
-    console.log()
-
+    
     return(
         <Container
             maxWidth='lg' 
             sx={{
-            mt: 5,
-            mb: 5,
+            mt: 4,
+            pb: 4,
             }}
         >
-        
             <Paper elevation={3} sx={{
                 mr: 2,
                 p: 2,
@@ -54,7 +40,7 @@ const Todo = () => {
             }}>
                 <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
                     <Grid item xs={6}>
-                        <MyCalendar/>
+                        <TodaysWork/>
                     </Grid>
                     <Grid item xs={6}>
                         <TodoAllMember getScheduleList={getScheduleList} scheduleList={scheduleList}/>
@@ -72,13 +58,9 @@ const Todo = () => {
             }}>
                 <Grid container rowSpacing={2} sx={{ m: 4 }} textAlign='center' display='flex'>
                     <Grid item xs={6}>
-                        <Typography>
+                        <Typography variant='h5' sx={{mb: 3}}>
                             Today : {today}
                         </Typography>
-                        <p/>
-                        <Typography>
-                            <TodaysWork/>
-                        </Typography>       
                     </Grid>
                     <Grid item xs={6}>
                         <TodoIndivMember />

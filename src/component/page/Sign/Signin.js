@@ -15,6 +15,7 @@ import { Modal } from '../../modal/Modal';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { loginState } from '../../../store/user';
+import { nicknameState } from '../../../store/getnickname.js'
 
 const Signin = () => {
   const { Failure } = Modal();
@@ -36,6 +37,7 @@ const Signin = () => {
         Failure('아이디 또는 패스워드가 틀렸습니다.')
       } else if(res.data.message === 'success'){
         dispatch(loginState(true))
+        dispatch(nicknameState(res.data.nickname))
         navigate('/')
       } else {
         console.log(res.data)
@@ -62,64 +64,66 @@ const Signin = () => {
   }
 
   return (
-    <Container component="main" maxWidth="xs" sx={{height: '50rem'}}>
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ mt: 3, bgcolor: 'blue.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5" sx={{ mt: 2 }} >
-          로그인
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
-          <TextField
-            color='blue'
-            margin="normal"
-            required
-            fullWidth
-            id="id"
-            label="ID"
-            name="id"
-            autoFocus
-          />
-          <TextField
-            color='blue'
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-          />
-          <Button
-            color='blue'
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 7, mb: 2 }}
-          >
+    <div className='bgcolor'>
+      <Container component="main" maxWidth="md" sx={{height: '50rem', bgcolor:'white.main'}}>
+        <CssBaseline />
+        <Box
+          sx={{
+
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ mt: 15, bgcolor: 'darkblue.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" sx={{ mt: 2 }} >
             로그인
-          </Button>
-          <Grid container>
-            <Grid item xs>
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
+            <TextField
+              color='blue'
+              margin="normal"
+              required
+              fullWidth
+              id="id"
+              label="ID"
+              name="id"
+              autoFocus
+            />
+            <TextField
+              color='blue'
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+            />
+            <Button
+              color='blue'
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 7, mb: 2 }}
+            >
+              로그인
+            </Button>
+            <Grid container>
+              <Grid item xs>
+              </Grid>
+              <Grid item sx={{ mt: 1 }}>
+                <Link onClick={onClickSignup} variant="body1" underline="none" style={{cursor: 'pointer', color: '#777777'}}>
+                  {"회원이 아니신가요?"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item sx={{ mt: 1 }}>
-              <Link onClick={onClickSignup} variant="body1" underline="none" style={{cursor: 'pointer', color: '#777777'}}>
-                {"회원이 아니신가요?"}
-              </Link>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   );
 }
 

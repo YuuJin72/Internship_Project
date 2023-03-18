@@ -28,7 +28,7 @@ const PwCheck = ({isCorrect, getIsCorrect}) => {
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ml: 3}}>
                 <Grid container>
                     <Grid item xs={12} sx={{mt: 20}}>
-                        <Typography>
+                        <Typography variant="h6">
                             비밀번호를 한번 더 입력해주세요
                         </Typography>
                     </Grid>

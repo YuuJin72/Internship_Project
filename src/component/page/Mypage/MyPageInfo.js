@@ -40,17 +40,28 @@ const MyPageInfo = () => {
         fetchPost()
     },[])
 
+    const textSx = {
+        p: 2, 
+        mb: 3,
+        ml: 25,
+        mr: 25,
+        backgroundColor: 'blue.dark',
+        borderRadius: 5,
+        boxShadow: 5,
+        color: 'white.main'
+      }
+
     return(
-        <>
+        <div>
             <Grid container textAlign='left' alignItems='center' sx={{ml: 3}}>
                 <Grid item xs={12} textAlign='center' sx={{mt: 10}}>
-                    <Typography variant="h4">
+                    <Typography variant="h4" sx={textSx}>
                         내 정보 페이지
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h5" sx={{mt: 10}}>
-                        내 아이디 : {info?.id}
+                        내 아이디  :  {info?.id}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} >
@@ -70,7 +81,7 @@ const MyPageInfo = () => {
                     <Button variant="contained" onClick={handleSubmit}> 수정 </Button>
                 </Grid>
             </Grid>
-        </>
+        </div>
     )
 }
 

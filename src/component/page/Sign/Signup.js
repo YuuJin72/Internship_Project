@@ -211,18 +211,18 @@ const SignUp = () => {
   }, [selectedImage]);
   // ============================ 이미지 업로드 부분 끝======================================= //
   return (
-    <Container>
-        <Container component="main" maxWidth='md'>
+    <div className='bgcolor'>
+        <Container component="main" maxWidth='md' sx={{bgcolor: 'white.main'}}>
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'darkblue.main' }}>
+            <Avatar sx={{ mt: 10, bgcolor: 'darkblue.main' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" mt='1rem'>
@@ -256,7 +256,22 @@ const SignUp = () => {
                 </Grid>
                 {/* <p>{errors.nickname?.message}</p> */}
                 <Grid item xs={12} mt='1rem'/>
-                
+                <Grid item xs={12} sm={6} sx={{mt: 3}}>
+                    <TextField
+                      color='blue'
+                      size="small"
+                      required
+                      fullWidth
+                      id="password"
+                      label="비밀번호"
+                      type="password"
+                      name="password"
+                      value={password}
+                      onChange={handlePassword}
+                      error= {passwordValid}
+                      helperText={passwordErrorMessage}
+                    />
+                </Grid>
                 <Grid item xs={12} sm={6} />
                 <Grid item xs={12} sm={6}>
                     <TextField
@@ -277,7 +292,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} />
                 <Grid item xs={12} mt='1rem'/>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{mt: 5}}>
                   <TextField
                     color='blue'
                     size="small"
@@ -292,7 +307,7 @@ const SignUp = () => {
                     helperText={emailErrorMessage}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{mt: 5}}>
                   <Button
                   color='blue'
                   variant="contained"
@@ -312,7 +327,7 @@ const SignUp = () => {
                   />
                 </Grid>
                 <Grid item xs={12} mt='1rem'/>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{mt: 5}}>
                   <TextField
                     color='blue'
                     size="small"
@@ -328,18 +343,6 @@ const SignUp = () => {
                   />
                 </Grid>
                 <Grid item xs={12} mt='1rem'/>
-                <Grid item xs={12} sm={4}>
-                  <DefaultImage className='img-thumbnail'/>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Button
-                  component='label'
-                  color='blue'
-                  variant="contained">
-                      프로필 업로드
-                      <input hidden accept="image/*" multiple type="file" />
-                  </Button>
-                </Grid>
                 <Grid item xs={12} sm={4.5} />
                <Grid item xs={12} sm={6}>
                   <Button
@@ -348,7 +351,7 @@ const SignUp = () => {
                   variant="contained"
                   sx={{ 
                       mt: 3,
-                      mb: 2,
+                      mb: 10,
                       minWidth: 200,
                   }}
                   >
@@ -362,7 +365,7 @@ const SignUp = () => {
           
           </div>
         </Container>
-    </Container>
+    </div>
   );
 }
 

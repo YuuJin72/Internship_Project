@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useSelector, useDispatch } from 'react-redux';
 import { studyNavState } from '../../../../store/studyNav';
+import { Container } from '@mui/material';
 
 
 
@@ -31,13 +32,17 @@ export default function NavTabs() {
 
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Tabs value={value} onChange={handleChange} centered TabIndicatorProps={{style: {background:'blue'}}}>
-        <LinkTab label="Home" id='1'/>
-        <LinkTab label="Todo" id='2'/>
-        <LinkTab label="Board"  id='3'/>
-        <LinkTab label="Settings" id='4'/>
-      </Tabs>
-    </Box>
+    <div className='bgcolor'>
+      <Container maxWidth='lg'>
+        <Box sx={{backgroundColor: 'white.main', borderBottom: 2, borderColor: '#AAAAAA'}} >
+          <Tabs value={value} onChange={handleChange} centered TabIndicatorProps={{style: {background:'blue'}}}>
+            <LinkTab label="Home" id='1'/>
+            <LinkTab label="Todo" id='2'/>
+            <LinkTab label="Board"  id='3'/>
+            <LinkTab label="Settings" id='4'/>
+          </Tabs>
+        </Box>
+      </Container>
+    </div>
   );
 }

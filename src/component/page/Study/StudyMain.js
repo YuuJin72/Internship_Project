@@ -58,7 +58,8 @@ const StudyMain = () => {
     const cards = [1, 2, 3, 4, 5, 6]
 
     return (
-        <>
+        <div className='bgcolor'>
+          <Container maxWidth='lg'>
           <CssBaseline />
             <Box
               sx={{
@@ -67,7 +68,7 @@ const StudyMain = () => {
                 pb: 6,
               }}
             >
-              <Container maxWidth="sm">
+              <Container maxWidth="sm" >
                 <Typography
                   component="h1"
                   variant="h2"
@@ -102,7 +103,7 @@ const StudyMain = () => {
                   </Grid>
                 </Grid>
               </Container>
-            </Box>
+            
             <Container sx={{ py: 8 }} maxWidth="md">
             <Typography
                   component="h3"
@@ -113,7 +114,7 @@ const StudyMain = () => {
                 >
                   최신 스터디 목록
             </Typography>
-            <LatestPost />
+              <LatestPost />
             <Typography
                   marginTop="8rem"
                   component="h3"
@@ -168,7 +169,9 @@ const StudyMain = () => {
             </Typography>
             
             </Container>
-          </>
+            </Box>
+          </Container>
+        </div>
       );
 }
 

@@ -16,7 +16,7 @@ export default function Footer(){
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{mt: 3}}>
-                    <Link href="https://github.com/YuuJin72/Internship_Project"  rel="noreferrer" underline="none" color="secondary" style={{cursor: 'pointer'}}>
+                    <Link href="https://github.com/YuuJin72/Internship_Project"  rel="noreferrer" underline="none" color="white.main">
                         <GitHubIcon fontSize='large' />
                     </Link>
                 </Grid>
