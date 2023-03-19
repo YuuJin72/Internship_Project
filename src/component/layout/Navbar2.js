@@ -219,8 +219,11 @@ const Navbar2 = () => {
               {user ? 
               <Typography sx={{mr: 3}}>
                 {nickname} 님, 환영합니다! 
-              </Typography>
-              : '로그인하여 서비스를 즐겨보세요!'}
+              </Typography> 
+              : 
+              <Typography sx={{mr: 3}}> 
+                로그인하여 서비스를 이용해보세요!
+              </Typography>}
               <IconButton size="large" 
               color="inherit" 
               onClick={handleHome}>

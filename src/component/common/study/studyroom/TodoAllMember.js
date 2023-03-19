@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Grid, TextField, Typography, Button, Box } from "@mui/material";
-import { Modal } from "../../../modal/Modal";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -20,11 +19,16 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
       .then((res) => {
         if(res.data.message === 'success'){
           getScheduleList(res.data.result)
-          console.log(res.data.result[0].hostid, res.data.loginid)
           if(res.data.result[0].hostid === res.data.loginid){
             setAuth(true)
           }
-        } else {
+        } else if(res.data.message === 'no_result'){
+          getScheduleList(res.data.result)
+          if(res.data.result[0].hostid === res.data.loginid){
+            setAuth(true)
+          }
+        }
+        else {
           console.log('err')
         }
       })
@@ -33,7 +37,6 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
     useEffect(() => {
       fetchPost()
     },[])
-  
     const handleChangeTodo = (e) => {
       setTodo(e.target.value)
     }
@@ -45,7 +48,6 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
       })
       .then((res) => {
         if(res.data.message === 'success'){
-          console.log('success')
           fetchPost()
         } else {
           console.log('err')
@@ -59,7 +61,6 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
       })
       .then((res) => {
         if(res.data.message === 'success'){
-          console.log('success')
           fetchPost()
         } else {
           console.log('err')
@@ -100,7 +101,7 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
                   <Button variant='contained' onClick={handleSubmitTodo} sx={{mt: 2}}> + </Button>
               </Grid>
             </Grid>}
-            {scheduleList && scheduleList.map((el) => (
+            {scheduleList && !scheduleList[0].noresult && scheduleList.map((el) => (
               <Box key={el._id} boxShadow={3} borderRadius={4} sx={{ml: 3, mr: 5, mb: 1, mt: 2, p: 1}}>
                 <Grid container alignItems='center'>
                   <Grid item xs={5}>

@@ -33,8 +33,6 @@ let today = getFormatDate(new Date())
       if(res.data.message === 'success'){
         setTodoList(res.data.result)
         setTodoFinished(!!res.data.result[0]?.isfinished)
-      } else {
-        console.log('err')
       }
     })
   }
@@ -54,25 +52,18 @@ let today = getFormatDate(new Date())
     })
     .then((res) => {
       if(res.data.message === 'success'){
-        console.log('success')
         fetchPost()
-      } else {
-        console.log('err')
       }
     })
   }
 
   const handleDeleteTodo = (e) => {
-    console.log(e.target.id)
     axios.post(`http://localhost:8080/study/${params.id}/tododelete`, {
       _id: e.target.id,
     })
     .then((res) => {
       if(res.data.message === 'success'){
-        console.log('success')
         fetchPost()
-      } else {
-        console.log('err')
       }
     })
   }
