@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Card, CardContent, Typography, CardActions, Button } from "@mui/material";
-import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg"
+import { Card, CardContent, Typography, CardActions, Button, Grid } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Modal } from "../../modal/Modal";
 import ListImg from '../../../assets/images/StudyList.jpg'
 
-const LatestPost = () => {
+const DeadLine = () => {
 
     const navigate = useNavigate()
 
@@ -29,7 +28,7 @@ const LatestPost = () => {
 
     useEffect(() => {
         const fetchPost = () => {
-            axios.get("http://localhost:8080/study/latest")
+            axios.get("http://localhost:8080/study/deadline")
             .then((res) => {
                 if(res.data.message === "success") {
                   setPosts(res.data.posts)
@@ -61,8 +60,17 @@ const LatestPost = () => {
                             {el.tag}
                         </Typography>
                     </CardContent>
+                    <Grid container sx={{p: 2}}>
+                        <Grid item xs={2}>
+                            <Button size="small" variant="contained" id={el._num} onClick={handleMoveDetail}>상세</Button>
+                        </Grid>
+                        <Grid item xs={10} sx={{textAlign: 'right'}}>
+                            <Typography sx={{color: 'red.main'}}>
+                                {el.remain}명 남음!
+                            </Typography>
+                        </Grid>
+                    </Grid>
                     <CardActions>
-                        <Button size="small" variant="contained" id={el._num} onClick={handleMoveDetail}>상세</Button>
                     </CardActions>
                 </Card>
             ))}
@@ -70,4 +78,4 @@ const LatestPost = () => {
     )
 }
 
-export default LatestPost;
+export default DeadLine;

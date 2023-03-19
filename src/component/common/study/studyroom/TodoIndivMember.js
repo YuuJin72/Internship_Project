@@ -61,13 +61,13 @@ const TodoIndivMember = () => {
             </Typography>
             {todoMember && todoMember.map((el) => ( 
                 <Grid 
-                    key={el?.id}
+                    key={el?.mem}
                     container sx={{ mt: 1.5 }} 
                     textAlign='center' 
                     borderRadius={3} 
                     height='2rem' 
                     alignItems='center'>
-                <Grid key={el?.id} item xs={6}>
+                <Grid key={el?.mem} item xs={6}>
                     {el?.mem}
                 </Grid>
                 <Grid item xs={6}>

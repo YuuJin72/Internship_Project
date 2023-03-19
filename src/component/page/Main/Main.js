@@ -1,8 +1,7 @@
 import './Main.css'
 import axios from 'axios'
-import mainimg from '../../../assets/images/mainimg.jpg'
 import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { loginState } from '../../../store/user'
 
 const Main = () => {
@@ -18,7 +17,7 @@ const Main = () => {
         })
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         fetchLogin()
     },[])
 

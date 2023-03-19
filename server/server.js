@@ -163,10 +163,6 @@ app.post('/signup/emailauth', (req, res) => {
   })
 })
 
-// 프로필사진 업로드
-app.post('/signup/upload', (req, res) => {
-
-})
 
 // 회원가입 - 이메일
 const appDir = './templates/authMail.ejs';
@@ -239,7 +235,7 @@ app.post('/signup', (req, res) => {
     if(result.length === 0){
       res.json({ message: "error" })
     }
-    else if (result[0].auth_number === Number(req.body.emailnumber)) {
+    else if (result[0].auth_number === req.body.emailnumber) {
       const inssql = `INSERT INTO user
             (id, pw, email, nickname)
             VALUES
@@ -362,6 +358,30 @@ app.get('/study/latest', (req, res) => {
   })
 })
 
+// 마감임박 스터디 조회
+app.get('/study/deadline', (req, res) => {
+  const sql = `
+  select sl.title, sl.tag, sl.detail, sl._num, sl.limit_member,  Count(sm._num) as mem, (sl.limit_member - Count(sm._num)) as remain from studylist sl
+  join studymember sm 
+  on sm._num = sl._num
+  group by sl.title, sl.tag, sl.detail, sl._num, sl.limit_member
+  having remain < 3
+  and remain > 0
+  limit 6`
+  con.query(sql, (err, result) => {
+    console.log(result)
+    if(err) {
+      res.json({message : "fail"})
+    }
+    else{
+      res.send({
+        message: "success",
+        posts: result,
+      })
+    }
+  })
+})
+
 // 모든 스터디 조회
 app.get('/study/list', (req, res) => {
   const sql = `SELECT * FROM studylist
@@ -436,10 +456,10 @@ app.post('/study/requestmember/:id', (req, res) => {
   join studylist sl
   on sl._num = sm._num
   where sl._num = ?
-  and sm.confirmed = 1
+  and sm.id <> ?
   group by limit_member`
-  con.query(chkSql, [Number(req.params.id)], (err, result) => {
-    if(result[0].total >= result[0].limit_member){
+  con.query(chkSql, [Number(req.params.id), req.user[0].id], (err, result) => {
+    if(req.isAuthenticated() && (result[0].total >= result[0].limit_member)){
       res.json({message: "overlimit"})
     } else if(req.isAuthenticated() && !req.body.status){
       const insSql = `INSERT INTO studymember
@@ -557,10 +577,11 @@ app.post('/study/:id/todosubmit', (req, res) => {
 
 // 스터디룸 todo - 개인 할 일 삭제
 app.post('/study/:id/tododelete', (req, res) => {
+  console.log(Number(req.params.id), req.body._id)
   const delSql = `delete from studysubobject
   where _num = ?
   and _id = ?`
-  con.query(delSql, [req.params.id, req.body._id], (err, result) => {
+  con.query(delSql, [Number(req.params.id), req.body._id], (err, result) => {
     if(err) res.json({message : 'err'})
     else res.json({message : 'success'})
   })
@@ -611,13 +632,26 @@ and (todotype = 0 or todotype is null)`
 // ================================================================== //
 // 스터디룸 todo - 전체스케쥴
 app.post('/study/:id/todoall', (req, res) => {
-  const sql = `select ss.title, ss.start, hostid from studysubobject ss
+  const sql = `select ss.title, ss.start, hostid, ss._id from studysubobject ss
 join studylist sl
 on sl._num = ss._num
 where ss._num = ?
 and todotype = 1`
   con.query(sql, [Number(req.params.id)], (err, result) => {
     if(err) res.json({message : 'err'})
+    if(result.length === 0){
+      const sql = `
+      select hostid, 'noresult' from studylist
+      where _num = ?`
+      con.query(sql, [Number(req.params.id)], (err, result) => {
+        if(err) res.json({message : 'err'})
+        else res.json({
+          message : 'no_result',
+          result: result,
+          loginid: req.user[0].id
+        })
+      })
+    }
     else res.json({
       message : 'success',
       result: result,

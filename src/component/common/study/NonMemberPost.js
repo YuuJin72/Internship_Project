@@ -7,11 +7,11 @@ import { Modal } from '../../modal/Modal';
 import { memberState } from '../../../store/member';
 import { loginState } from '../../../store/user';
 import ImgCreate from '../../../assets/images/StudyCreate.jpg'
+import { useEffect, useState } from 'react';
 
 const NonMemberPost = (props) => {
     const member = useSelector((state) => state.member.value)
     const islogin = useSelector((state => state.user.value))
-
     const params = useParams();
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -51,8 +51,8 @@ const NonMemberPost = (props) => {
       p: 2, 
       mt: 8,
       mb: 2,
-      ml: 18,
-      mr: 18,
+      ml: 20,
+      mr: 20,
       backgroundColor: 'blue.dark',
       borderRadius: 5,
       boxShadow: 5,
@@ -75,28 +75,28 @@ const NonMemberPost = (props) => {
                   </Grid>
                   <Grid item xs={6}>
                     <Grid item xs={12}>
-                      <Typography variant='h3' sx={TextSx}>
+                      <Typography variant='h4' sx={TextSx}>
                         태그
                       </Typography>
-                      <Typography variant='h4'>
+                      <Typography variant='h4' sx={{mt: 3}}>
                         {props.prop[0]?.tag}
                       </Typography>
-                      <Typography variant='h3' sx={TextSx}>
+                      <Typography variant='h4' sx={TextSx}>
                             방장
                       </Typography>
-                      <Typography variant='h4'>
+                      <Typography variant='h4' sx={{mt: 3}}>
                         {props.prop[0]?.hostid}
                       </Typography>
-                      <Typography variant='h3' sx={TextSx}>
+                      <Typography variant='h4' sx={TextSx}>
                             현재 인원 
                       </Typography>
-                      <Typography variant='h4'>
+                      <Typography variant='h4' sx={{mt: 3}}>
                         {props.prop[1]?.total} / {props.prop[0]?.limit_member}
                       </Typography>
-                      <Typography variant='h3' sx={TextSx}>
+                      <Typography variant='h4' sx={TextSx}>
                         스터디 소개
                       </Typography>
-                      <Typography variant='h5'>
+                      <Typography variant='h5' sx={{mt: 3}}>
                         {props.prop[0]?.detail}
                       </Typography>
                     </Grid>

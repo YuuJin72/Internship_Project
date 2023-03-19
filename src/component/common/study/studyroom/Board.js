@@ -91,7 +91,6 @@ const Board = () => {
 
     const handBoardEditChange = (e) => {
         setBoardEdit(e.target.value)
-        console.log(boardEdit)
     }
 
     // 게시물 수정 완료 파트
@@ -213,6 +212,15 @@ const Board = () => {
                         </Grid>
                     </Grid>
                 </Box>))}
+                {!boardList && 
+                <Box sx={{textAlign: 'center'}}>
+                    <Typography variant="h4" sx={{mt: 10}}>
+                        게시글이 아직 없습니다.
+                    </Typography>
+                    <Typography variant="h5" sx={{mt: 7, mb: 25}}>
+                        이 방의 첫 게시글을 남겨보세요!
+                    </Typography>
+                </Box>}
             </Paper>
         </Container>
     )

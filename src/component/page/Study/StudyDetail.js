@@ -27,19 +27,15 @@ const StudyDetail = () => {
         axios.get(`http://localhost:8080/study/isconfirmed/${params.id}`)
         .then((res) => {
             if(res.data.message === "confirmed"){
-                console.log('confirmed')
                 setConfirmed(true)
                 dispatch(studyRoomState(res.data.hostid))
             } else if (res.data.message === "404"){
-                console.log('404')
                 navigate('/Error')
             } else if (res.data.message === "waiting"){
-                console.log('waiting')
                 dispatch(memberState(true))
                 setPost(res.data.result)
                 setLimmem(res.data.limmem)
             } else if (res.data.message === "nonconfirmed"){
-                console.log('nonconfirmed')
                 setPost(res.data.result)
                 setLimmem(res.data.limmem)
                 dispatch(memberState(false))

@@ -18,6 +18,7 @@ const MyCalendar = (prop) => {
         plugins={[ dayGridPlugin, bootstrap5Plugin]}
         events={prop.prop}
         themeSystem= 'bootstrap5'
+        height= '600px'
       />}
     </div>
   );
