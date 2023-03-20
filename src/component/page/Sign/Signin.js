@@ -83,7 +83,7 @@ const Signin = () => {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
             <TextField
-              color='blue'
+              
               margin="normal"
               required
               fullWidth
@@ -93,7 +93,7 @@ const Signin = () => {
               autoFocus
             />
             <TextField
-              color='blue'
+              
               margin="normal"
               required
               fullWidth
@@ -103,7 +103,7 @@ const Signin = () => {
               id="password"
             />
             <Button
-              color='blue'
+              
               type="submit"
               fullWidth
               variant="contained"

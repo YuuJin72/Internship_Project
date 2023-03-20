@@ -82,7 +82,7 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
     return(
         <>
             <Typography variant="h4" sx={textSx}>
-              팀 스케쥴
+              팀 스케줄
             </Typography>
             {auth && 
             <Grid container alignItems='center' sx={{pr: 5}}>

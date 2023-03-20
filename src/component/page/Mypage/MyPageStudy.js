@@ -53,7 +53,7 @@ const MyPageStudy = () => {
                 </Grid>
                 <Grid item xs={12} >
                 {mystudy && mystudy.map((el) => (
-                    el.confirmed === 1 && <Box key={el._num} id={el._num} borderRadius={5} boxShadow={5} backgroundColor='blue.main' color='white.main' onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, mr: 10}}>
+                    el.confirmed === 1 && <Box key={el._num} id={el._num} borderRadius={5} boxShadow={5} onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, mr: 10}}>
                         <Grid container alignItems='center' sx={{height: '5rem'}}>
                             <Grid item xs={2}>
                                 <Typography id={el._num}>
@@ -81,7 +81,7 @@ const MyPageStudy = () => {
                 </Grid>
                 <Grid item xs={12} >
                 {mystudy && mystudy.map((el) => (
-                    el.confirmed === 0 && <Box key={el._num} id={el._num} borderRadius={5} boxShadow={5} backgroundColor='blue.main' color='white.main' onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, mr: 10}}>
+                    el.confirmed === 0 && <Box key={el._num} id={el._num} borderRadius={5} boxShadow={5} onClick={handleOnClick} sx={{height: '5rem', mt: 1.5, mr: 10}}>
                         <Grid container alignItems='center' sx={{height: '5rem'}}>
                             <Grid item xs={2} >
                                 <Typography id={el._num}>

@@ -29,6 +29,10 @@ function App() {
       fontFamily: 'OAGothic-Medium'
     },
     palette: {
+      primary: {
+        main: '#22365E',
+        contrastText: '#fff',
+      },
       blue: {
         main: '#1971c2',
         light: '#a5d8ff',

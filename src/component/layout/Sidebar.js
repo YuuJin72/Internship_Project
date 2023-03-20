@@ -29,23 +29,23 @@ const Sidebar = () => {
       }
 
     return(
-        <div className="sidebar">
+        <div>
             <Container sx={{height: '50em'}}>
                 <Grid container>
                     <Grid item xs={12} sx={{pt: 2}}>
-                        <Typography onClick={handleMyInfo} variant='h5' sx={textSx}>마이 페이지</Typography>
+                        <Typography onClick={handleMyInfo} variant='h5' sx={textSx} >마이 페이지</Typography>
                     </Grid>
                     
                     <Grid item xs={12}>
-                        <Typography onClick={handleMyInfo} variant='h6' sx={{pt: 2, pb: 2}} style={{background: 'radial-gradient(circle, #EEEEEE, #FFFFFF)'}}>내 정보 보기</Typography>
+                        <Typography onClick={handleMyInfo} variant='h6' sx={{pt: 2, pb: 2}} style={{background: 'radial-gradient(circle, #EEEEEE, #FFFFFF)', cursor: 'pointer'}}>내 정보 보기</Typography>
                     </Grid>
                     <Divider orientation="horizontal" sx={{width: '100%'}}/>
                     <Grid item xs={12}>
-                        <Typography onClick={handleMyStudy} variant='h6' sx={{mt: 2, mb: 2}}>내 스터디 보기</Typography>
+                        <Typography onClick={handleMyStudy} variant='h6' sx={{mt: 2, mb: 2}} style={{cursor: 'pointer'}}>내 스터디 보기</Typography>
                     </Grid>
                     <Divider orientation="horizontal" sx={{width: '100%'}}/>
                     <Grid item xs={12}>
-                        <Typography onClick={handleChangePw} variant='h6' sx={{pt: 2, pb: 2}}  style={{background: 'radial-gradient(circle, #EEEEEE, #FFFFFF)'}}>비밀번호 변경</Typography>
+                        <Typography onClick={handleChangePw} variant='h6' sx={{pt: 2, pb: 2}}  style={{background: 'radial-gradient(circle, #EEEEEE, #FFFFFF)', cursor: 'pointer'}}>비밀번호 변경</Typography>
                     </Grid>
                 </Grid>
                 

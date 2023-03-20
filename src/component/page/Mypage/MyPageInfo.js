@@ -2,6 +2,9 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Typography, TextField, Grid, Button } from "@mui/material"
 import { Modal } from "../../modal/Modal"
+import { nicknameState } from "../../../store/getnickname"
+import { useDispatch } from "react-redux"
+
 
 const MyPageInfo = () => {
 
@@ -9,6 +12,8 @@ const MyPageInfo = () => {
     const [nickname, setNickname] = useState('')
 
     const { Success, Failure } = Modal()
+
+    const dispatch = useDispatch()
 
     const fetchPost = () => {
         axios.get('http://localhost:8080/myinfo')
@@ -30,6 +35,7 @@ const MyPageInfo = () => {
         .then((res) => {
             if(res.data.message === 'success'){
                 Success('수정이 완료되었습니다.')
+                dispatch(nicknameState(nickname))
             } else {
                 Failure('에러가 발생했습니다.')
             }

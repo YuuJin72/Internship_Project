@@ -123,25 +123,22 @@ export default function StudyList() {
 
   return (
     <div className='bgcolor'>
-      <Container sx={{bgcolor: 'white.main'}}>
-        <Grid container>
+      <Container sx={{bgcolor: 'white.main', pb: 4}}>
+        <Grid container sx={{mb: 2}}>
           <Grid item xs={12}>
             <Typography
-                component="h1"
                 variant="h4"
                 align="center"
-                color="text.primary"
-                gutterBottom
                 sx={{pt: 15, pb: 5}}
             >
-                전체 스터디
+              전체 스터디
             </Typography>
           </Grid>
           <Grid item xs={12} textAlign='right'>
-            <Button variant='contained' sx={{mb: 2}} onClick={handleClickBack}> 돌아가기 </Button>
+            <Button variant='contained' onClick={handleClickBack}> 돌아가기 </Button>
           </Grid>
         </Grid>
-      <TableContainer component={Paper} sx={{pb: 5}}>
+      <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableBody>
             {(rowsPerPage > 0

@@ -204,16 +204,7 @@ const Navbar2 = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color='darkblue'>
           <Toolbar>
-            <img src= {logo} alt='logo' style={{height: '5rem', width: '8.5rem'}}/> 
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            >
-              
-            </Typography>
-
+            <img src= {logo} alt='logo' style={{height: '5rem', width: '8.5rem', cursor: 'pointer'}} onClick={handleHome}/> 
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
               {user ? 

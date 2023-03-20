@@ -1,7 +1,5 @@
 import { Box, Typography, Button, TextField, Slider, Container } from '@mui/material';
-import './StudyCreate.css'
 import { useEffect, useState } from 'react';
-import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { Modal } from '../../modal/Modal';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
