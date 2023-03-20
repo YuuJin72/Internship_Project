@@ -110,7 +110,6 @@ const NonMemberPost = (props) => {
                         {!member && <Button
                         variant='contained'
                         type='submit'
-                        color='darkblue'
                         sx={{
                             m: '1rem',
                           }}>가입 신청</Button>} 
@@ -124,7 +123,6 @@ const NonMemberPost = (props) => {
                         <Button
                         variant='contained'
                         onClick={handleCancel}
-                        color='darkblue'
                         sx={{
                             m: '1rem',
                           }}>목록</Button>

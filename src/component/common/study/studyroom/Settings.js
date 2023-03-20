@@ -176,7 +176,7 @@ const Settings = () => {
                                             {el.id}
                                         </Grid>
                                         <Grid item xs={6}>
-                                            {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" color="blue" sx={{ml: 2}}>수락</Button>}
+                                            {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" sx={{ml: 2}}>수락</Button>}
                                             {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>거절</Button>}
                                             {el.confirmed === 1 && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>추방</Button>}
                                         </Grid>
@@ -200,7 +200,7 @@ const Settings = () => {
                                             {el.id}
                                         </Grid>
                                         <Grid item xs={6}>
-                                            {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" color="blue" sx={{ml: 2}}>수락</Button>}
+                                            {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleConfirm} size="small" sx={{ml: 2}}>수락</Button>}
                                             {el.confirmed === 0 && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>거절</Button>}
                                             {el.confirmed === 1 && el.hostid !== el.id && <Button variant='contained' id={el.id} onClick={handleNonConfirm} size="small" color="red" sx={{ml: 2}}>추방</Button>}
                                             {el.confirmed === 1 && el.hostid === el.id && <Button variant='contained' disabled size="small" color="red" sx={{ml: 2}}>방장</Button>}
@@ -210,7 +210,7 @@ const Settings = () => {
                             </Box>
                         </Grid>
                         <Grid item xs textAlign='center'>
-                            <Button variant='contained' type="submit" color="blue" sx={{mt: 10, mb: 2}}>저장</Button>
+                            <Button variant='contained' type="submit" sx={{mt: 10, mb: 2}}>저장</Button>
                         </Grid>
                     </Grid>
                 </Paper>

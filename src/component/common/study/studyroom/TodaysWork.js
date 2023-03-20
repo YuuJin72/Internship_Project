@@ -96,7 +96,7 @@ let today = getFormatDate(new Date())
   return (
     <>
         <Typography variant="h4" sx={textSx}>
-          개인 스케쥴
+          개인 스케줄
         </Typography>
       <Grid container alignItems='center'>
         <Grid item xs={10}>

@@ -235,7 +235,7 @@ app.post('/signup', (req, res) => {
     if(result.length === 0){
       res.json({ message: "error" })
     }
-    else if (result[0].auth_number === req.body.emailnumber) {
+    else if (result[0].auth_number === Number(req.body.emailnumber)) {
       const inssql = `INSERT INTO user
             (id, pw, email, nickname)
             VALUES
@@ -592,7 +592,8 @@ app.post('/study/:id/todofinish', (req, res) => {
   const searchSql = `
   select * from studysubobject
   where _num = ?
-  and id = ?`
+  and id = ?
+  and todotype = 0`
   con.query(searchSql, [Number(req.params.id), req.user[0].id], (err, result) => {
     if(err) res.json({message : 'err'})
     else if(result.length === 0){
@@ -614,12 +615,13 @@ app.post('/study/:id/todofinish', (req, res) => {
 // 스터디룸 todo - 멤버 상태
 app.post('/study/:id/todomember', (req, res) => {
   const sql = `
-select distinct sm.id as mem, isfinished, todotype from studymember sm
-left join studysubobject s 
-on sm.id = s.id
-and sm._num = s._num
-where sm._num = ?
-and (todotype = 0 or todotype is null)`
+  select distinct sm.id as mem, isfinished from studymember sm
+  left join studysubobject s
+  on (sm.id = s.id and sm._num = s._num)
+  join studylist sl on sm._num = sl._num
+  where sm._num = ?
+  and sm.confirmed = 1
+  and (todotype = if(s.id = sl.hostid and todotype = 0, 0, 1) or todotype is null or todotype = 0)`
   con.query(sql, [Number(req.params.id)],(err, result) => {
     if(err) res.json({message : 'err'})
     else res.json({

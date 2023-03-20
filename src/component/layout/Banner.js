@@ -16,7 +16,6 @@ const Banner = () => {
         slidesToScroll: 1,
     };
 
-
     return (
         <div className='banner'>
             <Slider {...settings}>

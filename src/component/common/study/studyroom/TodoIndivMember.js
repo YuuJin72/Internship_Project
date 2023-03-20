@@ -57,7 +57,7 @@ const TodoIndivMember = () => {
     return(
         <>
             <Typography variant="h4" sx={textSx}>
-                달성 여부
+                일일 목표 달성
             </Typography>
             {todoMember && todoMember.map((el) => ( 
                 <Grid 

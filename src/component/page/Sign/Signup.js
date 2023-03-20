@@ -1,16 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { ReactComponent as DefaultImage } from "../../../assets/images/Default.svg";
 import { Modal } from '../../modal/Modal'
 import axios from 'axios';
 import { Validation } from './Validation'
@@ -232,7 +224,7 @@ const SignUp = () => {
               <Grid container spacing={2} item xs={12}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    color='blue'
+                    
                     size="small"
                     name="id"
                     onChange = {handleChangeId}
@@ -248,7 +240,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Button
-                  color='blue'
+                  
                   variant="contained"
                   onClick={onClickIdCheck}>
                       중복 확인
@@ -258,7 +250,7 @@ const SignUp = () => {
                 <Grid item xs={12} mt='1rem'/>
                 <Grid item xs={12} sm={6} sx={{mt: 3}}>
                     <TextField
-                      color='blue'
+                      
                       size="small"
                       required
                       fullWidth
@@ -275,7 +267,7 @@ const SignUp = () => {
                 <Grid item xs={12} sm={6} />
                 <Grid item xs={12} sm={6}>
                     <TextField
-                      color='blue'
+                      
                       size="small"
                       required
                       fullWidth
@@ -294,7 +286,7 @@ const SignUp = () => {
                 <Grid item xs={12} mt='1rem'/>
                 <Grid item xs={12} sm={6} sx={{mt: 5}}>
                   <TextField
-                    color='blue'
+                    
                     size="small"
                     required
                     fullWidth
@@ -309,7 +301,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{mt: 5}}>
                   <Button
-                  color='blue'
+                  
                   variant="contained"
                   onClick={onClickemailAuth}>
                       인증번호 받기
@@ -317,7 +309,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    color='blue'
+                    
                     size="small"
                     required
                     fullWidth
@@ -329,7 +321,7 @@ const SignUp = () => {
                 <Grid item xs={12} mt='1rem'/>
                 <Grid item xs={12} sm={6} sx={{mt: 5}}>
                   <TextField
-                    color='blue'
+                    
                     size="small"
                     required
                     fullWidth
@@ -346,7 +338,7 @@ const SignUp = () => {
                 <Grid item xs={12} sm={4.5} />
                <Grid item xs={12} sm={6}>
                   <Button
-                  color='blue'
+                  
                   type="submit"
                   variant="contained"
                   sx={{ 
