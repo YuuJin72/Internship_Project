@@ -6,6 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
+import { Modal } from "../../../modal/Modal";
 
 const TodoAllMember = ({scheduleList, getScheduleList}) => {
   const params = useParams()
@@ -13,6 +14,8 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
   const [todo, setTodo] = useState('')
   const [objDate, setObjDate] = useState(dayjs())
   const [auth, setAuth] = useState(false)
+
+  const { Failure } = Modal()
 
   const fetchPost = () => {
       axios.post(`http://localhost:8080/study/${params.id}/todoall`)
@@ -27,9 +30,6 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
           if(res.data.result[0].hostid === res.data.loginid){
             setAuth(true)
           }
-        }
-        else {
-          console.log('err')
         }
       })
     }
@@ -50,7 +50,7 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
         if(res.data.message === 'success'){
           fetchPost()
         } else {
-          console.log('err')
+          Failure('에러가 발생했습니다.')
         }
       })
     }
@@ -63,7 +63,7 @@ const TodoAllMember = ({scheduleList, getScheduleList}) => {
         if(res.data.message === 'success'){
           fetchPost()
         } else {
-          console.log('err')
+          Failure('에러가 발생했습니다.')
         }
       })
     }

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Grid, Typography } from "@mui/material"
+import { Modal } from "../../../modal/Modal"
 import axios from "axios"
 
 const TodoIndivMember = () => {
 
     const params = useParams()
-
+    const { Failure } = Modal()
     const [todoMember, setTodoMember] = useState([])
 
     
@@ -20,12 +21,12 @@ const TodoIndivMember = () => {
                     setTodoMember(res.data.result)
                 }
                 else{
-                    console.log('err')
+                    Failure('에러가 발생했습니다.')
                 }
             })
         }
         fetchPost()
-    }, [todoMember])
+    }, [setTodoMember])
 
     const finishSx = {
         backgroundColor: 'green.main',

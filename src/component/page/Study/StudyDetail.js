@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { memberState } from '../../../store/member';
 import { studyRoomState } from '../../../store/studyRoomHost'
 import Loading from "../../common/Loading";
+import { Modal } from "../../modal/Modal";
 
 
 const StudyDetail = () => {
@@ -15,6 +16,8 @@ const StudyDetail = () => {
     const [ post, setPost ] = useState('')
     const [limmem, setLimmem] = useState(0)
     const dispatch = useDispatch()
+    const { Failure } = Modal()
+
     const member = useSelector((state) => state.member.value)
     const host = useSelector((state) => state.studyroomhost.value)
     const params = useParams();
@@ -40,7 +43,7 @@ const StudyDetail = () => {
                 setLimmem(res.data.limmem)
                 dispatch(memberState(false))
             } else {
-                console.log('err')
+                Failure('에러가 발생했습니다.')
             }
             setLoading(false)
             

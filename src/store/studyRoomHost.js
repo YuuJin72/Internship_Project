@@ -1,13 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const studyRoomSlice = createSlice({
-    name: "studyroomhost",
-    initialState: { value: '' },
-    reducers: {
-        studyRoomState: (state, action) => {
-            state.value = action.payload
-        }
+  name: "studyroomhost",
+  initialState: { value: "" },
+  reducers: {
+    studyRoomState: (state, action) => {
+      state.value = action.payload;
     },
+  },
 });
 
 export default studyRoomSlice.reducer;
