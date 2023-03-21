@@ -103,6 +103,7 @@ const StudyCreate = () => {
             error = {studyTitleValid}
             color="darkblue" 
             helperText={titleErrorMessage}
+            required
             focused 
             margin="normal"
             sx={{mb: 6}}/><p/>
